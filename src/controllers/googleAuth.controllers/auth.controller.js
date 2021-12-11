@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
   const { email, given_name, family_name, picture } = user;
   const searchedUser = await User.findOne({ email });
   const tokens = TokenService.generateTokens(email);
-  const { refreshToken } = tokens;
+  const { refreshToken, accessToken } = tokens;
 
   if (searchedUser) {
     const { fullName, avatar } = searchedUser;
@@ -45,7 +45,7 @@ const auth = async (req, res, next) => {
         lastName: family_name,
       },
     },
-    refreshToken,
+    accessToken,
   });
 };
 module.exports = auth;
