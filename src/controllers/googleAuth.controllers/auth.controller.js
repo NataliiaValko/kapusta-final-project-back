@@ -32,9 +32,8 @@ const auth = async (req, res, next) => {
       },
       emailVerified: true,
       refreshToken,
-      passwordAvailability: false,
+      password: null,
     });
-    console.log(newUser);
     await newUser.save();
   }
   res.status(200).json({

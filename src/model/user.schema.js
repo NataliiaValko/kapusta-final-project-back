@@ -19,10 +19,6 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
-    passwordAvailability: {
-      type: Boolean,
-      default: true,
-    },
     phone: {
       type: String,
       default: null,
