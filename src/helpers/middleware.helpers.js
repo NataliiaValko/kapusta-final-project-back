@@ -12,7 +12,8 @@ const responseErrorOrNext = (error, _, next) => {
 
 const isValidId = (id) => Types.ObjectId.isValid(id);
 
-const isTokenExpiredError = (error) => error.toString().includes('TokenExpiredError');
+const isTokenExpiredError = (error) =>
+  error.toString().includes('TokenExpiredError');
 
 const validateObject = (contact, joiSchema, requiredFields = []) => {
   let objectSchema = Object.create(joiSchema);
@@ -21,4 +22,15 @@ const validateObject = (contact, joiSchema, requiredFields = []) => {
 
   return objectSchema.validate(contact);
 };
-module.exports = { responseErrorOrNext, validateObject, isValidId, isTokenExpiredError };
+
+const isLoggedIn = (req, res, next) => {
+  req.user ? next() : res.sendStatus(401);
+};
+
+module.exports = {
+  responseErrorOrNext,
+  validateObject,
+  isValidId,
+  isTokenExpiredError,
+  isLoggedIn,
+};
