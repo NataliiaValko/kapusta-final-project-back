@@ -1,0 +1,359 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Wallet Project",
+    "description": "This is a back-end documentation for [Wallet Project](http://google.com) performed by Adamants team.\nYou can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "noreply.wallet.adamants@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api/",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "user",
+      "description": "User operations",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/registration": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Register new user",
+        "description": "This can only be done by not already registered user.",
+        "operationId": "registration",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Valid user registration body object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegistrationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful user registration",
+            "schema": {
+              "$ref": "#/definitions/UserRegistrationResponse"
+            }
+          },
+          "400": {
+            "description": "User with same email already exists.",
+            "schema": {
+              "example": {
+                "message": "User with same email already exists.",
+                "status": "Error",
+                "code": "400"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "example": {
+                "message": "Internal server error.",
+                "status": "Error",
+                "code": "500"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/verify/{verificationToken}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Verify user email",
+        "description": "This can only be done by registered user.",
+        "operationId": "verify",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "verificationToken",
+            "type": "string",
+            "description": "User verification token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification successfull",
+            "schema": {
+              "example": {
+                "message": "Verification successfull"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found or email already verified",
+            "schema": {
+              "example": {
+                "message": "User not found",
+                "status": "Error",
+                "code": "404"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Login user into the application",
+        "description": "This can only be done by user with verified email.",
+        "operationId": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Valid user registration body object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegistrationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful user login",
+            "schema": {
+              "$ref": "#/definitions/UserLoginResponse"
+            }
+          },
+          "400": {
+            "description": "Email or password is wrong",
+            "schema": {
+              "example": {
+                "message": "Email or password is wrong",
+                "status": "Error",
+                "code": "400"
+              }
+            }
+          },
+          "403": {
+            "description": "Email is not verified",
+            "schema": {
+              "example": {
+                "message": "User email is not verified",
+                "status": "Error",
+                "code": "403"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logout current logged in user",
+        "description": "Logout current logged in user",
+        "operationId": "logout",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer e123sdfgsdfqwe123edw34dfs...",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful logout"
+          },
+          "400": {
+            "description": "Error in access token in header",
+            "schema": {
+              "example": {
+                "message": "Bad request",
+                "status": "Error",
+                "code": "400"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "example": {
+                "message": "User not found",
+                "status": "Error",
+                "code": "404"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/invite": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Invite friend to join application",
+        "description": "User can invite friend to this Application. Friend will receive invitation email with link.",
+        "operationId": "invite",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Valid invitation body object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInvitationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful friend invitation",
+            "schema": {
+              "example": {
+                "message": "Invitation successful."
+              }
+            }
+          },
+          "400": {
+            "description": "Some body errors (no friendEmail or friendName).",
+            "schema": {
+              "example": {
+                "message": "friendEmail is required.",
+                "status": "Error",
+                "code": "400"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserRegistrationRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Valid email with min 2 domains",
+          "example": "john.doe@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
+          "example": "Hello123-"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "UserInvitationRequest": {
+      "type": "object",
+      "properties": {
+        "friendEmail": {
+          "type": "string",
+          "description": "Valid friend`s email with min 2 domains",
+          "example": "denis.bestmentor@gmail.com"
+        },
+        "friendName": {
+          "type": "string",
+          "description": "Valid friend name",
+          "example": "Denis Hvorostyaniy"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "UserRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "email": "john.doe@gmail.com"
+          }
+        }
+      }
+    },
+    "UserLoginResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "success"
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "user": {
+              "email": "john.doe@gmail.com",
+              "fullName": {
+                "firstName": null,
+                "lastName": null
+              },
+              "avatar": null,
+              "settings": {
+                "language": "en",
+                "theme": "light",
+                "currency": "UAH"
+              },
+              "securityIssue": false,
+              "permissions": "user"
+            },
+            "accessToken": "==== accessToken example ===="
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
