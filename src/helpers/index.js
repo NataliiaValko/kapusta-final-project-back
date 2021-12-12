@@ -1,7 +1,16 @@
 const { asyncWrapper } = require('./wrapper');
-const { isErrorOrFalsyValue, responseWithError } = require('./controller.helpers');
+const {
+  isErrorOrFalsyValue,
+  responseWithError,
+} = require('./controller.helpers');
 const { isDuplicateKeyError } = require('./service.helpers');
-const { responseErrorOrNext, validateObject, isValidId, isTokenExpiredError } = require('./middleware.helpers');
+const {
+  responseErrorOrNext,
+  validateObject,
+  isValidId,
+  isTokenExpiredError,
+  isLoggedIn,
+} = require('./middleware.helpers');
 
 module.exports = {
   asyncWrapper,
@@ -12,4 +21,5 @@ module.exports = {
   validateObject,
   isValidId,
   isTokenExpiredError,
+  isLoggedIn,
 };

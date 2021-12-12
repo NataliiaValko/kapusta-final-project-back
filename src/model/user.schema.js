@@ -1,7 +1,13 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const { EnumDTO } = require('../DTO');
-const { SALT_COUNT, LANGUAGE_ENUM, THEME_ENUM, CURRENCY_ENUM, PERMISSIONS_ENUM } = require('../config');
+const {
+  SALT_COUNT,
+  LANGUAGE_ENUM,
+  THEME_ENUM,
+  CURRENCY_ENUM,
+  PERMISSIONS_ENUM,
+} = require('../config');
 
 const userSchema = new Schema(
   {
@@ -12,7 +18,6 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
     },
     phone: {
       type: String,
