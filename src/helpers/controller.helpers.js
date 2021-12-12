@@ -14,7 +14,13 @@ const responseWithError = async (obj, next) => {
   }
 };
 
+const isSameTypeInTransaction = (prevTransactionType, newTransactionType) => prevTransactionType === newTransactionType;
+
+const getAmountDifference = (oldAmount, newAmount) => -(oldAmount - newAmount);
+
 module.exports = {
   isErrorOrFalsyValue,
   responseWithError,
+  isSameTypeInTransaction,
+  getAmountDifference,
 };
