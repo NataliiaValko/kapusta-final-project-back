@@ -1,10 +1,10 @@
-const { v4 } = require('uuid');
-const { BadRequest } = require('http-errors');
-const { User } = require('../../model');
-const { isDuplicateKeyError } = require('../../helpers');
-const { mailService } = require('../mail.service');
-const { UserDTO } = require('../../DTO');
-const TokenService = require('../token.service');
+const { v4 } = require("uuid");
+const { BadRequest } = require("http-errors");
+const { User } = require("../../model");
+const { isDuplicateKeyError } = require("../../helpers");
+const { mailService } = require("../mail.service/mail.service");
+const { UserDTO } = require("../../DTO");
+const TokenService = require("../token.service");
 
 const registration = async (user) => {
   try {
@@ -28,7 +28,9 @@ const registration = async (user) => {
 
     return { newUser, tokens };
   } catch (error) {
-    return isDuplicateKeyError(error) ? new BadRequest('User with same email already exists.') : error;
+    return isDuplicateKeyError(error)
+      ? new BadRequest("User with same email already exists.")
+      : error;
   }
 };
 

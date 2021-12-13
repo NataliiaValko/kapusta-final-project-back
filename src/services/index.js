@@ -1,5 +1,5 @@
 const UserService = require("./user.services");
-const { mailService } = require("./mail.service");
+const { mailService } = require("./mail.service/mail.service");
 const TokenService = require("./token.service");
 const TransactionService = require("./transaction.service");
 
