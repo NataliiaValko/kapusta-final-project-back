@@ -1,28 +1,36 @@
-const { Transaction } = require('../../model');
+const { Transaction } = require("../../model");
 
 const getAll = async ({ user: { _id } }, query) => {
   try {
     const searchOptions = { owner: _id };
 
     Object.keys(query).forEach((key) => {
-      if (key !== 'user' && query[key] !== undefined) searchOptions[key] = query[key];
+      if (key !== "user" && query[key] !== undefined)
+        searchOptions[key] = query[key];
     });
 
-    const transactions = await Transaction.find(searchOptions).populate('owner', 'email');
+    const transactions = await Transaction.find(searchOptions).populate(
+      "owner",
+      "email"
+    );
 
     let total = 0;
 
-    if ('startDate' in query) {
+    if ("startDate" in query) {
       const startDate = new Date(query?.startDate).getTime();
-      const endDate = new Date(query?.endDate).getTime();
+      const endDate = new Date(query?.endDate || Date.now()).getTime();
 
       return transactions
         .reduce((acc, transaction) => {
           const trDate = new Date(transaction.date).getTime();
+
           if (trDate < endDate && trDate > startDate) {
-            total += transaction.amount;
+            transaction.type === "income"
+              ? (total += transaction.amount)
+              : (total -= transaction.amount);
             return [...acc, transaction];
           }
+
           return [...acc];
         }, [])
         .concat({ total });
@@ -30,7 +38,10 @@ const getAll = async ({ user: { _id } }, query) => {
 
     return transactions
       .map((transaction) => {
-        total += transaction.amount;
+        transaction.type === "income"
+          ? (total += transaction.amount)
+          : (total -= transaction.amount);
+
         return transaction;
       })
       .concat({ total });
