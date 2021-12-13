@@ -1,6 +1,6 @@
-const { mailService } = require('../mail.service');
-const { User } = require('../../model');
-const { isMailSent } = require('../../helpers');
+const { mailService } = require("../mail.service/mail.service");
+const { User } = require("../../model");
+const { isMailSent } = require("../../helpers");
 
 const invite = async ({ user, friendName, friendEmail }) => {
   try {
@@ -10,7 +10,7 @@ const invite = async ({ user, friendName, friendEmail }) => {
       _id,
     } = user;
     const mailResponse = await mailService.sendInvitationMail(
-      `${firstName ?? 'Your'} ${lastName ?? 'friend'} (${email})`,
+      `${firstName ?? "Your"} ${lastName ?? "friend"} (${email})`,
       friendName,
       friendEmail
     );
