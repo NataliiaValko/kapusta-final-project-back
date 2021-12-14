@@ -1,6 +1,17 @@
 const getUserInfoWithId = ({ user }) => {
-  const { _id, email, fullName, avatar, balance, settings, securityIssue, phoneVerified, permissions, invitedFriends } =
-    user;
+  const {
+    _id,
+    email,
+    fullName,
+    avatar,
+    balance,
+    isBalanceSetted,
+    settings,
+    securityIssue,
+    phoneVerified,
+    permissions,
+    invitedFriends,
+  } = user;
   return {
     user: {
       _id,
@@ -8,6 +19,7 @@ const getUserInfoWithId = ({ user }) => {
       fullName,
       avatar,
       balance,
+      isBalanceSetted,
       settings,
       securityIssue,
       phoneVerified,
@@ -18,11 +30,32 @@ const getUserInfoWithId = ({ user }) => {
 };
 
 const getUserInfoWithToken = ({ user, tokens }) => {
-  const { email, fullName, avatar, balance, settings, securityIssue, phoneVerified, permissions, invitedFriends } =
-    user;
+  const {
+    email,
+    fullName,
+    avatar,
+    balance,
+    isBalanceSetted,
+    settings,
+    securityIssue,
+    phoneVerified,
+    permissions,
+    invitedFriends,
+  } = user;
   const { accessToken } = tokens;
   return {
-    user: { email, fullName, avatar, balance, settings, securityIssue, phoneVerified, permissions, invitedFriends },
+    user: {
+      email,
+      fullName,
+      avatar,
+      balance,
+      isBalanceSetted,
+      settings,
+      securityIssue,
+      phoneVerified,
+      permissions,
+      invitedFriends,
+    },
     accessToken,
   };
 };
@@ -34,6 +67,7 @@ const getUserSimpleInfo = ({ user }) => {
     fullName,
     avatar,
     balance,
+    isBalanceSetted,
     settings,
     securityIssue,
     phoneVerified,
@@ -47,6 +81,7 @@ const getUserSimpleInfo = ({ user }) => {
       fullName,
       avatar,
       balance,
+      isBalanceSetted,
       settings,
       securityIssue,
       phoneVerified,
