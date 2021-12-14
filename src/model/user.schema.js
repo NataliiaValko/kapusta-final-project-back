@@ -52,6 +52,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isBalanceSetted: {
+      type: Boolean,
+      default: false,
+    },
     permissions: {
       type: String,
       enum: EnumDTO.getSchemaEnum(PERMISSIONS_ENUM),
