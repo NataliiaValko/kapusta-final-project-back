@@ -21,7 +21,11 @@ transactionRouter.delete(
   '/:transactionId',
   asyncWrapper(authenticateUser, transactionController.remove)
 );
-
+transactionRouter.get(
+  '/categories',
+  authenticateUser,
+  transactionController.getAllcategories
+);
 // transactionRouter.get(
 //     "/get",
 //     asyncWrapper(authenticateUser, userValidation, transactionController.add)
