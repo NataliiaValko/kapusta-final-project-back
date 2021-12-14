@@ -2,7 +2,7 @@ const { v4 } = require("uuid");
 const { BadRequest } = require("http-errors");
 const { User } = require("../../model");
 const { isDuplicateKeyError } = require("../../helpers");
-const { mailService } = require("../mail.service");
+const { mailService } = require("../mail.service/mail.service");
 const { UserDTO } = require("../../DTO");
 const TokenService = require("../token.service");
 

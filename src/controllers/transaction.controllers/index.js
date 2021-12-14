@@ -4,4 +4,5 @@ const { remove } = require('./remove.transaction.controller');
 const {
   getAllcategories,
 } = require('./getAllcategories.transaction.controller');
-module.exports = { add, getAll, remove, getAllcategories };
+module.exports = { add, getAll, remove, getAllcategoriesб update };
+

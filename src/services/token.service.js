@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = require("../config");
-const { User } = require("../model");
-const { ACCESS_EXPIRES_IN, REFRESH_EXPIRES_IN } = require("../config");
+const jwt = require('jsonwebtoken');
+const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = require('../config');
+const { User } = require('../model');
+const { ACCESS_EXPIRES_IN, REFRESH_EXPIRES_IN } = require('../config');
 
 const generateTokens = (payload) => {
   const accessToken = jwt.sign({ payload }, JWT_ACCESS_SECRET, {
@@ -40,7 +40,7 @@ const validateRefreshToken = (token) => {
   }
 };
 
-const finUserDTOken = async (refreshToken) => {
+const findUserByToken = async (refreshToken) => {
   return await User.findOne({ refreshToken });
 };
 
@@ -62,5 +62,5 @@ module.exports = {
   removeToken,
   validateAccessToken,
   validateRefreshToken,
-  finUserDTOken,
+  findUserByToken,
 };

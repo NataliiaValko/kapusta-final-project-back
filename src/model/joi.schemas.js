@@ -15,7 +15,6 @@ const LangEnum = EnumDTO.getSchemaEnum(LANGUAGE_ENUM);
 const ThemeEnum = EnumDTO.getSchemaEnum(THEME_ENUM);
 const CurrencyEnum = EnumDTO.getSchemaEnum(CURRENCY_ENUM);
 const OperationsEnum = EnumDTO.getSchemaEnum(OPERATION_TYPES);
-const CategoriesEnum = EnumDTO.getSchemaEnum(ALL_CATEGORIES);
 const IncomeEnum = EnumDTO.getSchemaEnum(INCOME_CATEGORIES);
 const ExpenseEnum = EnumDTO.getSchemaEnum(EXPENSE_CATEGORIES);
 
@@ -80,7 +79,7 @@ const joiTransactionSchema = joi.object({
 
   date: joi.date().required(),
 
-  comment: joi.string().min(1).max(40).required(),
+  comment: joi.string().max(40),
 
   user: joi.any(),
 });

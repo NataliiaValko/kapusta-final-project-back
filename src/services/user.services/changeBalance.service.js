@@ -1,24 +1,29 @@
-const { User } = require("../../model");
+const { User } = require('../../model');
 
 const changeBalance = async (
-	{ owner: { email }, amount, type },
-	isDeletingTransaction = false
+  { owner: { email }, amount, type },
+  isDeletingTransaction = false,
+  amountDifference = null
 ) => {
-	try {
-		const user = await User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
 
-		if (isDeletingTransaction) {
-			amount *= -1;
-		}
+    if (isDeletingTransaction) {
+      amount *= -1;
+    }
 
-		type === "income" ? (user.balance += amount) : (user.balance -= amount);
+    if (amountDifference !== null) {
+      amount = amountDifference;
+    }
 
-		await user.save();
+    type === 'income' ? (user.balance += amount) : (user.balance -= amount);
 
-		return user.balance;
-	} catch (error) {
-		return error;
-	}
+    await user.save();
+
+    return user.balance;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = { changeBalance };

@@ -5,7 +5,7 @@ const {
   userUpdateValidation,
 } = require('./user.validation.middleware');
 const { checkUserCredentials, authenticateUser } = require('./user.check.middleware');
-const { transactionValidation } = require('./transaction.validation.middleware');
+const { transactionAddValidation } = require('./transaction.validation.middleware');
 
 module.exports = {
   userValidation,
@@ -13,6 +13,6 @@ module.exports = {
   userInvitationValidation,
   checkUserCredentials,
   authenticateUser,
-  transactionValidation,
+  transactionAddValidation,
   userUpdateValidation,
 };

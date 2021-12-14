@@ -2,12 +2,16 @@ const { asyncWrapper } = require('./wrapper');
 const {
   isErrorOrFalsyValue,
   responseWithError,
+   isSameTypeInTransaction,
+  getAmountDifference,
 } = require('./controller.helpers');
+
 const {
   isDuplicateKeyError,
   getCategories,
   formattedDate,
 } = require('./service.helpers');
+
 const {
   responseErrorOrNext,
   validateObject,
@@ -15,6 +19,9 @@ const {
   isTokenExpiredError,
   isLoggedIn,
 } = require('./middleware.helpers');
+
+const { isMailSent } = require('./mail.helper');
+
 
 module.exports = {
   asyncWrapper,
@@ -28,4 +35,7 @@ module.exports = {
   isLoggedIn,
   getCategories,
   formattedDate,
+  isMailSent,
+  isSameTypeInTransaction,
+  getAmountDifference,
 };
