@@ -3,7 +3,11 @@ const {
   isErrorOrFalsyValue,
   responseWithError,
 } = require('./controller.helpers');
-const { isDuplicateKeyError } = require('./service.helpers');
+const {
+  isDuplicateKeyError,
+  getCategories,
+  formattedDate,
+} = require('./service.helpers');
 const {
   responseErrorOrNext,
   validateObject,
@@ -22,4 +26,6 @@ module.exports = {
   isValidId,
   isTokenExpiredError,
   isLoggedIn,
+  getCategories,
+  formattedDate,
 };
