@@ -16,6 +16,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "googleapis": "^92.0.0",
     "http-errors": "^1.8.1",
     "joi": "^17.4.2",
     "joi-password-complexity": "^5.1.0",
