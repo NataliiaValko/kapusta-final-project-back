@@ -1,4 +1,5 @@
 const { Transaction } = require("../../model");
+const { formattedDate } = require("../../helpers");
 
 const getAll = async ({ user: { _id } }, query) => {
   try {
@@ -17,14 +18,15 @@ const getAll = async ({ user: { _id } }, query) => {
     let total = 0;
 
     if ("startDate" in query) {
-      const startDate = new Date(query?.startDate).getTime();
-      const endDate = new Date(query?.endDate || Date.now()).getTime();
+      const { startDate } = query;
+      const endDate = query?.endDate || Date.now();
 
       return transactions
         .reduce((acc, transaction) => {
-          const trDate = new Date(transaction.date).getTime();
-
-          if (trDate < endDate && trDate > startDate) {
+          if (
+            formattedDate(transaction.date) < formattedDate(endDate) &&
+            formattedDate(transaction.date) > formattedDate(startDate)
+          ) {
             transaction.type === "income"
               ? (total += transaction.amount)
               : (total -= transaction.amount);
