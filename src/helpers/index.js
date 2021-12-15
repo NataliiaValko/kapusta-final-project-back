@@ -1,16 +1,17 @@
-const { asyncWrapper } = require('./wrapper');
+const { asyncWrapper } = require("./wrapper");
 const {
   isErrorOrFalsyValue,
   responseWithError,
-   isSameTypeInTransaction,
+  isSameTypeInTransaction,
   getAmountDifference,
-} = require('./controller.helpers');
+} = require("./controller.helpers");
 
 const {
   isDuplicateKeyError,
   getCategories,
   formattedDate,
-} = require('./service.helpers');
+  checkFieldsOnUserUpdate,
+} = require("./service.helpers");
 
 const {
   responseErrorOrNext,
@@ -18,10 +19,9 @@ const {
   isValidId,
   isTokenExpiredError,
   isLoggedIn,
-} = require('./middleware.helpers');
+} = require("./middleware.helpers");
 
-const { isMailSent } = require('./mail.helper');
-
+const { isMailSent } = require("./mail.helper");
 
 module.exports = {
   asyncWrapper,
@@ -38,4 +38,5 @@ module.exports = {
   isMailSent,
   isSameTypeInTransaction,
   getAmountDifference,
+  checkFieldsOnUserUpdate,
 };
