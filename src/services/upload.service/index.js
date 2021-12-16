@@ -1,3 +1,3 @@
-const { upload } = require('./upload.service');
+const { fileService } = require("./upload.service");
 
-module.exports = { upload };
+module.exports = { fileService };
