@@ -6,5 +6,6 @@ const { invite } = require('./invite.controller');
 const { refresh } = require('./refresh.controller');
 const { current } = require('./current.controller');
 const { update } = require('./update.controller');
+const { changeAvatar } = require('./changeAvatar.controller');
 
-module.exports = { registration, verify, login, logout, invite, refresh, current, update };
+module.exports = { registration, verify, login, logout, invite, refresh, current, update, changeAvatar };

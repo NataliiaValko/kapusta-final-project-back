@@ -29,9 +29,12 @@ const {
   INCOME_CATEGORIES,
   OPERATION_TYPES,
   ALL_CATEGORIES,
+  MAX_AVATAR_SIZE,
+  TEMP_FOLDER_PATH,
+  IMAGE_MIME_TYPES,
 } = require('./constants');
 const { connectDatabase } = require('./db.connect');
-const { cookieOptions } = require('./options');
+const { cookieOptions, uploadConfig } = require('./options');
 
 module.exports = {
   DB_URL,
@@ -64,4 +67,8 @@ module.exports = {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
+  MAX_AVATAR_SIZE,
+  TEMP_FOLDER_PATH,
+  IMAGE_MIME_TYPES,
+  uploadConfig,
 };
