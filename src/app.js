@@ -6,6 +6,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerConfig = require('../swagger.json');
 const { userRouter, transactionRouter } = require('./routes');
+const { uploadMiddleware } = require('./middlewares');
 const developerRouter = require('./routes/developers.routes');
 const googleAuthRouter = require('./routes/googleAuth.routes');
 
@@ -33,6 +34,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+app.use('/api/users/avatar', uploadMiddleware.single('avatar'));
 app.use('/api/users', userRouter);
 app.use('/api/transactions', transactionRouter);
 app.use('/api/developers', developerRouter);

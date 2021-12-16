@@ -6,6 +6,7 @@ const {
 } = require('./user.validation.middleware');
 const { checkUserCredentials, authenticateUser } = require('./user.check.middleware');
 const { transactionAddValidation } = require('./transaction.validation.middleware');
+const { uploadMiddleware, checkFilePresence } = require('./upload.middleware');
 
 module.exports = {
   userValidation,
@@ -15,4 +16,6 @@ module.exports = {
   authenticateUser,
   transactionAddValidation,
   userUpdateValidation,
+  uploadMiddleware,
+  checkFilePresence,
 };

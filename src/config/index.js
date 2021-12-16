@@ -10,6 +10,10 @@ const {
   JWT_REFRESH_SECRET,
   MODE,
   BACKEND_APP_URL,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URL,
+  GOOGLE_REFRESH_TOKEN,
 } = require('./config');
 const {
   SALT_COUNT,
@@ -25,9 +29,12 @@ const {
   INCOME_CATEGORIES,
   OPERATION_TYPES,
   ALL_CATEGORIES,
+  MAX_AVATAR_SIZE,
+  TEMP_FOLDER_PATH,
+  IMAGE_MIME_TYPES,
 } = require('./constants');
 const { connectDatabase } = require('./db.connect');
-const { cookieOptions } = require('./options');
+const { cookieOptions, uploadConfig } = require('./options');
 
 module.exports = {
   DB_URL,
@@ -56,4 +63,12 @@ module.exports = {
   MODE,
   BACKEND_APP_URL,
   connectDatabase,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URL,
+  GOOGLE_REFRESH_TOKEN,
+  MAX_AVATAR_SIZE,
+  TEMP_FOLDER_PATH,
+  IMAGE_MIME_TYPES,
+  uploadConfig,
 };

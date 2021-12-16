@@ -7,5 +7,6 @@ const { refresh } = require('./refresh.service');
 const { current } = require('./current.service');
 const { update } = require('./update.service');
 const { changeBalance } = require('./changeBalance.service');
+const { changeAvatar } = require('./changeAvatar.service');
 
-module.exports = { registration, login, verify, logout, invite, refresh, current, update, changeBalance };
+module.exports = { registration, login, verify, logout, invite, refresh, current, update, changeBalance, changeAvatar };
