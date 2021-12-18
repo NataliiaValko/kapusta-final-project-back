@@ -18,10 +18,10 @@
   "basePath": "https://adamants-wallet-project-back.herokuapp.com/api",
   "servers": [
     {
-      "url": "https://adamants-wallet-project-back.herokuapp.com"
+      "url": "https://adamants-wallet-project-back.herokuapp.com/api"
     },
     {
-      "url": "http://localhost:4000"
+      "url": "http://localhost:4000/api"
     }
   ],
   "tags": [
@@ -189,28 +189,70 @@
         }
       }
     },
+    "/users/refresh": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Refresh tokens",
+        "description": "Refresh user tokens in case of 401 Unauthorized server response",
+        "operationId": "refresh",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "header",
+            "description": "Valid refreshToken from cookies",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful refresh",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in refresh token in cookie",
+            "schema": {
+              "example": {
+                "message": "Bad request",
+                "status": "Error",
+                "code": "400"
+              }
+            }
+          },
+          "401": {
+            "description": "Refresh token expired and user needs to log in",
+            "schema": {
+              "example": {
+                "message": "Unauthorized",
+                "status": "Error",
+                "code": "401"
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/logout": {
       "post": {
         "tags": ["Users"],
         "summary": "Logout current logged in user",
         "description": "Logout current logged in user",
         "operationId": "logout",
+        "security": [{"Bearer":[]}, {"refreshToken": []}],
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Bearer e123sdfgsdfqwe123edw34dfs...",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "204": {
             "description": "Successful logout"
           },
           "400": {
-            "description": "Error in access token in header",
+            "description": "Error in access/refresh token in header/cookie",
             "schema": {
               "example": {
                 "message": "Bad request",
@@ -238,16 +280,8 @@
         "summary": "Get current user info",
         "description": "This can only be done by not already logged in user.",
         "operationId": "current",
+        "security": [{"Bearer":[]}],
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Bearer e123sdfgsdfqwe123edw34dfs...",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful request to get user info ",
@@ -274,6 +308,8 @@
         "summary": "Update user information",
         "description": "This can only be done by logged in user.",
         "operationId": "update",
+        "security": [{"Bearer":[]}],
+
         "produces": ["application/json"],
         "parameters": [
           {
@@ -292,7 +328,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserLoginResponse"
+                  "$ref": "#/components/schemas/UserUpdateResponse"
                 }
               }
             }
@@ -314,12 +350,67 @@
         }
       }
     },
+    "/users/avatar": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user avatar with avatar file in from-data",
+        "description": "This can only be done by logged in user.",
+        "operationId": "avatar",
+        "security": [{"Bearer":[]}],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "avatar",
+            "type": "file",
+            "description": "Single image file with valid MIME-type",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/UserAvatarRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful user avatar update",
+            "content": {
+              "application/json": {
+                "schema": {
+                   "example": {
+                    "message": "success",               
+                    "data": {
+                        "avatar": "https://drive.google.com/drive/folders/162F92a-sm6MX8k96Jc59KCtf0NtXkdM4"
+                    }
+                   } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some file validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Wrong MIME-type",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/invite": {
       "post": {
         "tags": ["Users"],
         "summary": "Invite friend to join application",
         "description": "User can invite friend to this Application. Friend will receive invitation email with link.",
         "operationId": "invite",
+        "security": [{"Bearer":[]}],
+
         "produces": ["application/json"],
         "parameters": [
           {
@@ -363,7 +454,8 @@
           "email": {
             "type": "string",
             "description": "Valid email with min 2 domains",
-            "example": "john.doe@gmail.com"
+            "example": "john.doe@gmail.com",
+            "format": "email"
           },
           "password": {
             "type": "string",
@@ -381,6 +473,7 @@
           "friendEmail": {
             "type": "string",
             "description": "Valid friend`s email with min 2 domains",
+            "format": "email",
             "example": "denis.bestmentor@gmail.com"
           },
           "friendName": {
@@ -392,6 +485,10 @@
         "xml": {
           "name": "User"
         }
+      },
+      "UserAvatarRequest": {
+        "type": "file",
+        "required": true
       },
       "UserRegistrationResponse": {
         "type": "object",
@@ -424,6 +521,9 @@
                   "firstName": null,
                   "lastName": null
                 },
+                "balance": 0,
+                "isBalanceSetted": false,
+                "phone": null,
                 "avatar": null,
                 "settings": {
                   "language": "en",
@@ -444,7 +544,10 @@
           "fullName": {
             "type": "object",
             "example": {
-              "firstName": "Bill",
+              "firstName": {
+                "type": "string",
+                "example": "Bill"
+              },
               "lastName": "Gates"
             }
           },
@@ -479,22 +582,36 @@
               "user": {
                 "email": "john.doe@gmail.com",
                 "fullName": {
-                  "firstName": null,
-                  "lastName": null
+                  "firstName":  "Bill",
+                  "lastName": "Gates"
                 },
-                "avatar": null,
+                "phone": "123333333",
+                "balance": 15000,
+                "isBalanceSetted": true,
+                "avatar": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org",
                 "settings": {
                   "language": "en",
-                  "theme": "light",
-                  "currency": "UAH"
+                  "theme": "dark",
+                  "currency": "USD"
                 },
                 "securityIssue": false,
                 "permissions": "user"
-              },
-              "accessToken": "==== accessToken example ===="
+              }
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "refreshToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
