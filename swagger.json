@@ -55,11 +55,13 @@
                   "email": {
                     "type": "string",
                     "description": "Valid email with min 2 domains",
+                    "required": true,
                     "example": "john.doe@gmail.com",
                     "format": "email"
                   },
                   "password": {
                     "type": "string",
+                    "required": true,
                     "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
                     "example": "Hello123-"
                   }
@@ -173,8 +175,23 @@
           "description": "Valid user registration body object",
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationRequest"
+              "schema":  {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Valid email with min 2 domains",
+                    "required": true,
+                    "example": "john.doe@gmail.com",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
+                    "example": "Hello123-"
+                  }
+                }
               }
             }
           }
@@ -691,6 +708,40 @@
                 }
               
             
+          }
+        }
+      },
+      "TransactionObject": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["expense", "income"],
+            "description": "Type of user's transaction",
+            "example": "expense"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["salary", "additional", "products", "alcohol", "entertainment", "healthy", "transport", "home", "technic", "communication", "hobby", "education", "other"],
+            "description": "Category of user's transaction",
+            "example": "products"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Description of user's transaction",
+            "example": "Pork",
+            "default": ""
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Amount of user's transaction",
+            "example": 1000
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of user's transaction",
+            "example": "2021-12-12"
           }
         }
       }
