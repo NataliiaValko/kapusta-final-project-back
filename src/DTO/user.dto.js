@@ -11,6 +11,7 @@ const getUserInfoWithId = ({ user }) => {
     phoneVerified,
     permissions,
     invitedFriends,
+    refreshToken,
   } = user;
   return {
     user: {
@@ -25,6 +26,7 @@ const getUserInfoWithId = ({ user }) => {
       phoneVerified,
       permissions,
       invitedFriends,
+      refreshToken,
     },
   };
 };

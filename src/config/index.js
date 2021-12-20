@@ -14,12 +14,14 @@ const {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
+  FRONTEND_APP_URL,
+  TWILIO_ACCOUNT_CID,
+  TWILIO_AUTH_TOKEN,
 } = require('./config');
 const {
   SALT_COUNT,
   ACCESS_EXPIRES_IN,
   REFRESH_EXPIRES_IN,
-  APP_LINK,
   COOKIE_MAX_AGE,
   LANGUAGE_ENUM,
   THEME_ENUM,
@@ -32,9 +34,10 @@ const {
   MAX_AVATAR_SIZE,
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
+  ALLOWED_DOMAINS,
 } = require('./constants');
 const { connectDatabase } = require('./db.connect');
-const { cookieOptions, uploadConfig } = require('./options');
+const { cookieOptions, corsOptions, uploadConfig } = require('./options');
 
 module.exports = {
   DB_URL,
@@ -49,7 +52,6 @@ module.exports = {
   JWT_REFRESH_SECRET,
   ACCESS_EXPIRES_IN,
   REFRESH_EXPIRES_IN,
-  APP_LINK,
   COOKIE_MAX_AGE,
   cookieOptions,
   LANGUAGE_ENUM,
@@ -71,4 +73,9 @@ module.exports = {
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
   uploadConfig,
+  corsOptions,
+  ALLOWED_DOMAINS,
+  FRONTEND_APP_URL,
+  TWILIO_ACCOUNT_CID,
+  TWILIO_AUTH_TOKEN,
 };
