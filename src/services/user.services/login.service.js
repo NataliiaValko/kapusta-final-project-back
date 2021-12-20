@@ -1,5 +1,5 @@
-const { User } = require('../../model');
-const TokenService = require('../token.service');
+const { User } = require("../../model");
+const TokenService = require("../token.service");
 
 const login = async ({ email }) => {
   try {
@@ -7,7 +7,11 @@ const login = async ({ email }) => {
 
     const tokens = TokenService.generateTokens(user.email);
 
-    await TokenService.saveRefreshToken(user._id, tokens.refreshToken);
+    const res = await TokenService.saveRefreshToken(
+      user._id,
+      tokens.refreshToken
+    );
+    console.log("save", res);
 
     return { user, tokens };
   } catch (error) {

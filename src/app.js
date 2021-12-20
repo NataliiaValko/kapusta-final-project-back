@@ -2,17 +2,19 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const swaggerUi = require('swagger-ui-express');
+const passport = require('passport');
 
-const swaggerConfig = require('../swagger.json');
 const { userRouter, transactionRouter } = require('./routes');
 const { uploadMiddleware } = require('./middlewares');
 const developerRouter = require('./routes/developers.routes');
 const googleAuthRouter = require('./routes/googleAuth.routes');
+const { corsOptions } = require('./config');
+const swaggerConfig = require('../swagger.json');
+// const swaggerDoc = require("./swagger/routes/users/index");
 
 const app = express();
-const passport = require('passport');
-const session = require('express-session');
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(
@@ -20,13 +22,15 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup({
     ...swaggerConfig,
+    // ...swaggerDoc,
   })
 );
+
 app.use(session({ secret: 'keyboard cat' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 

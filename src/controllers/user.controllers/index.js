@@ -7,5 +7,6 @@ const { refresh } = require('./refresh.controller');
 const { current } = require('./current.controller');
 const { update } = require('./update.controller');
 const { changeAvatar } = require('./changeAvatar.controller');
+const { verifyPhone } = require('./verifyPhone.controller');
 
-module.exports = { registration, verify, login, logout, invite, refresh, current, update, changeAvatar };
+module.exports = { registration, verify, login, logout, invite, refresh, current, update, changeAvatar, verifyPhone };

@@ -41,7 +41,8 @@ const validateRefreshToken = (token) => {
 };
 
 const findUserByToken = async (refreshToken) => {
-  return await User.findOne({ refreshToken });
+  console.log('TS', refreshToken);
+  return await User.findOne({ refreshToken: refreshToken });
 };
 
 const removeToken = async (refreshToken) => {
