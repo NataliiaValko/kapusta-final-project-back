@@ -1,10 +1,15 @@
-const multer = require("multer");
-const { COOKIE_MAX_AGE, TEMP_FOLDER_PATH } = require("./constants");
+const multer = require('multer');
+const { COOKIE_MAX_AGE, TEMP_FOLDER_PATH, ALLOWED_DOMAINS } = require('./constants');
 
 const cookieOptions = {
   maxAge: COOKIE_MAX_AGE,
   httpOnly: true,
   secure: true,
+};
+
+const corsOptions = {
+  origin: ALLOWED_DOMAINS,
+  credentials: true,
 };
 
 const uploadConfig = multer.diskStorage({
@@ -16,4 +21,4 @@ const uploadConfig = multer.diskStorage({
   },
 });
 
-module.exports = { cookieOptions, uploadConfig };
+module.exports = { cookieOptions, uploadConfig, corsOptions };

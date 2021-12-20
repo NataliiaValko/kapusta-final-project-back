@@ -1,8 +1,8 @@
-const TokenService = require("../token.service");
+const TokenService = require('../token.service');
 
-const logout = async (_id) => {
+const logout = async (refreshToken) => {
   try {
-    return await TokenService.removeToken(_id);
+    return await TokenService.removeToken(refreshToken);
   } catch (error) {
     return error;
   }

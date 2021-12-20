@@ -32,9 +32,10 @@ const {
   MAX_AVATAR_SIZE,
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
+  ALLOWED_DOMAINS,
 } = require('./constants');
 const { connectDatabase } = require('./db.connect');
-const { cookieOptions, uploadConfig } = require('./options');
+const { cookieOptions, corsOptions, uploadConfig } = require('./options');
 
 module.exports = {
   DB_URL,
@@ -71,4 +72,6 @@ module.exports = {
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
   uploadConfig,
+  corsOptions,
+  ALLOWED_DOMAINS,
 };
