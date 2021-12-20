@@ -1,19 +1,32 @@
 const { Transaction } = require('../../model');
-const { getCategories, formattedDate } = require('../../helpers');
+const { formattedDate, getCategories } = require('../../helpers');
+
 const getAllCategories = async ({ user: { _id } }, query) => {
   try {
-    const { type, startDate, endDate } = query;
+    const { startDate, endDate } = query;
     const searchOptions = { owner: _id };
     const transactionsByOwner = await Transaction.find(searchOptions);
     const data = transactionsByOwner.reduce((acc, transaction) => {
+      const { type, category, amount, comment } = transaction;
       const date = formattedDate(transaction.date);
-      if (transaction.type === type && date >= formattedDate(startDate) && date <= formattedDate(endDate)) {
-        const { category, amount } = transaction;
-        getCategories(acc, category)
-          ? (getCategories(acc, category)[category] += amount)
-          : acc.push({ [category]: amount });
+      if (date >= formattedDate(startDate) && date <= formattedDate(endDate)) {
+        if (getCategories(acc, category)) {
+          const item = getCategories(acc, category);
+          item.category = category;
+          item.total += amount;
+          item.details[comment]
+            ? (item.details[comment] += amount)
+            : (item.details[comment] = amount);
+        } else if (type) {
+          acc.push({
+            type: type,
+            category: category,
+            total: amount,
+            details: { [comment]: amount },
+          });
+        }
       }
-      return acc;
+      return [...acc];
     }, []);
     return data;
   } catch (error) {}

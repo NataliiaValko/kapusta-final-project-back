@@ -1,7 +1,7 @@
-const { UserService } = require("../../services");
-const { cookieOptions } = require("../../config");
-const { UserDTO } = require("../../DTO");
-const { isErrorOrFalsyValue, responseWithError } = require("../../helpers");
+const { UserService } = require('../../services');
+const { cookieOptions } = require('../../config');
+const { UserDTO } = require('../../DTO');
+const { isErrorOrFalsyValue, responseWithError } = require('../../helpers');
 
 const refresh = async (req, res, next) => {
   const { refreshToken } = req.cookies;
@@ -14,9 +14,9 @@ const refresh = async (req, res, next) => {
 
   const userData = UserDTO.getUserInfoWithToken(user);
 
-  res.cookie("refreshToken", refreshToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, cookieOptions);
   res.status(200).json({
-    message: "success",
+    message: 'success',
     data: {
       ...userData,
     },
