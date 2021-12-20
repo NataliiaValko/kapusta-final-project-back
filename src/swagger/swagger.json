@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Kapu$ta Project",
+    "description": "This is a back-end documentation for [Kapu$ta Project](https://cabbage-project.netlify.app/) performed by Adamants team.\nYou can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "noreply.wallet.adamants@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "basePath": "https://adamants-wallet-project-back.herokuapp.com/api",
+  "servers": [
+    {
+      "url": "https://adamants-wallet-project-back.herokuapp.com"
+    },
+    {
+      "url": "http://localhost:4000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users operations"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions operations"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"]
+}

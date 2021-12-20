@@ -11,14 +11,8 @@ const developerRouter = require('./routes/developers.routes');
 const googleAuthRouter = require('./routes/googleAuth.routes');
 
 const app = express();
-
 const passport = require('passport');
-
 const session = require('express-session');
-app.use(session({ secret: 'keyboard cat' }));
-app.use(passport.initialize());
-app.use(passport.session());
-
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(
@@ -28,7 +22,9 @@ app.use(
     ...swaggerConfig,
   })
 );
-
+app.use(session({ secret: 'keyboard cat' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
