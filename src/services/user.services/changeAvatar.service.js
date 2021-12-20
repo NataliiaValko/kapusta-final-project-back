@@ -23,7 +23,6 @@ const changeAvatar = async ({ user: { _id } }, file) => {
   } finally {
     await fs.unlink(`${TEMP_FOLDER_PATH}/${originalname}`, (err) => {
       if (err) throw err;
-      console.log('temp folder clear');
     });
   }
 };

@@ -33,7 +33,6 @@ class FileService {
         const searchedSubstr = '&export=download';
         if (webContentLink.includes(searchedSubstr)) {
           const imageUrl = webContentLink.replace(searchedSubstr, '');
-          console.log(imageUrl);
           return imageUrl;
         }
       }

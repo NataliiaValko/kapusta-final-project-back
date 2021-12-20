@@ -41,20 +41,27 @@ const validateRefreshToken = (token) => {
 };
 
 const findUserByToken = async (refreshToken) => {
-  console.log('TS', refreshToken);
-  return await User.findOne({ refreshToken: refreshToken });
+  try {
+    return await User.findOne({ refreshToken: refreshToken });
+  } catch (error) {
+    return error;
+  }
 };
 
 const removeToken = async (refreshToken) => {
-  return await User.findOneAndUpdate(
-    { refreshToken },
-    {
-      $set: {
-        refreshToken: null,
+  try {
+    return await User.findOneAndUpdate(
+      { refreshToken },
+      {
+        $set: {
+          refreshToken: null,
+        },
       },
-    },
-    { new: true }
-  );
+      { new: true }
+    );
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
