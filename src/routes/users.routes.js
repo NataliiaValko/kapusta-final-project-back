@@ -24,7 +24,7 @@ userRouter.post(
   "/login",
   asyncWrapper(userValidation, checkUserCredentials, userController.login)
 );
-userRouter.post(
+userRouter.get(
   "/logout",
   asyncWrapper(authenticateUser, userController.logout)
 );

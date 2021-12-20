@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = require('../config');
-const { User } = require('../model');
-const { ACCESS_EXPIRES_IN, REFRESH_EXPIRES_IN } = require('../config');
+const jwt = require("jsonwebtoken");
+const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = require("../config");
+const { User } = require("../model");
+const { ACCESS_EXPIRES_IN, REFRESH_EXPIRES_IN } = require("../config");
 
 const generateTokens = (payload) => {
   const accessToken = jwt.sign({ payload }, JWT_ACCESS_SECRET, {
@@ -41,12 +41,13 @@ const validateRefreshToken = (token) => {
 };
 
 const findUserByToken = async (refreshToken) => {
-  return await User.findOne({ refreshToken });
+  console.log("TS", refreshToken);
+  return await User.findOne({ refreshToken: refreshToken });
 };
 
-const removeToken = async (refreshToken) => {
-  return await User.findOneAndUpdate(
-    { refreshToken },
+const removeToken = async (_id) => {
+  return await User.findByIdAndUpdate(
+    _id,
     {
       $set: {
         refreshToken: null,
@@ -55,6 +56,21 @@ const removeToken = async (refreshToken) => {
     { new: true }
   );
 };
+
+/*
+ * Old variant with cookie
+ */
+// const removeToken = async (refreshToken) => {
+//   return await User.findOneAndUpdate(
+//     { refreshToken },
+//     {
+//       $set: {
+//         refreshToken: null,
+//       },
+//     },
+//     { new: true }
+//   );
+// };
 
 module.exports = {
   generateTokens,

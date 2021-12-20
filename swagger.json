@@ -49,7 +49,7 @@
           "description": "Valid user registration body object",
           "content": {
             "application/json": {
-              "schema":  {
+              "schema": {
                 "type": "object",
                 "properties": {
                   "email": {
@@ -175,7 +175,7 @@
           "description": "Valid user registration body object",
           "content": {
             "application/json": {
-              "schema":  {
+              "schema": {
                 "type": "object",
                 "properties": {
                   "email": {
@@ -289,12 +289,12 @@
       }
     },
     "/users/logout": {
-      "post": {
+      "get": {
         "tags": ["Users"],
         "summary": "Logout current logged in user",
         "description": "Logout current logged in user",
         "operationId": "logout",
-        "security": [{"Bearer":[]}, {"refreshToken": []}],
+        "security": [{ "Bearer": [] }, { "refreshToken": [] }],
         "produces": ["application/json"],
         "responses": {
           "204": {
@@ -329,7 +329,7 @@
         "summary": "Get current user info",
         "description": "This can only be done by not already logged in user.",
         "operationId": "current",
-        "security": [{"Bearer":[]}],
+        "security": [{ "Bearer": [] }],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -355,7 +355,6 @@
                 }
               }
             }
-           
           }
         }
       }
@@ -366,21 +365,21 @@
         "summary": "Update user information",
         "description": "This can only be done by logged in user.",
         "operationId": "update",
-        "security": [{"Bearer":[]}],
+        "security": [{ "Bearer": [] }],
 
         "produces": ["application/json"],
         "requestBody": {
-            "type": "object",
-            "description": "Valid user update body object",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserUpdateRequest"
-                }
+          "type": "object",
+          "description": "Valid user update body object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
               }
             }
-          },
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful user update",
@@ -415,7 +414,7 @@
         "summary": "Update user avatar with avatar file in from-data",
         "description": "This can only be done by logged in user.",
         "operationId": "avatar",
-        "security": [{"Bearer":[]}],
+        "security": [{ "Bearer": [] }],
         "produces": ["application/json"],
         "parameters": [
           {
@@ -436,12 +435,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                   "example": {
-                    "message": "success",               
+                  "example": {
+                    "message": "success",
                     "data": {
-                        "avatar": "https://drive.google.com/drive/folders/162F92a-sm6MX8k96Jc59KCtf0NtXkdM4"
+                      "avatar": "https://drive.google.com/drive/folders/162F92a-sm6MX8k96Jc59KCtf0NtXkdM4"
                     }
-                   } 
+                  }
                 }
               }
             }
@@ -469,33 +468,33 @@
         "summary": "Invite friend to join application",
         "description": "User can invite friend to this Application. Friend will receive invitation email with link.",
         "operationId": "invite",
-        "security": [{"Bearer":[]}],
+        "security": [{ "Bearer": [] }],
         "produces": ["application/json"],
         "requestBody": {
-            "type": "object",
-            "description": "Valid invitation body object",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "friendEmail": {
-                      "type": "string",
-                      "description": "Valid friend`s email with min 2 domains",
-                      "format": "email",
-                      "example": "denis.bestmentor@gmail.com"
-                    },
-                    "friendName": {
-                      "type": "string",
-                      "description": "Valid friend name",
-                      "example": "Denis Hvorostyaniy"
-                    }
+          "type": "object",
+          "description": "Valid invitation body object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "friendEmail": {
+                    "type": "string",
+                    "description": "Valid friend`s email with min 2 domains",
+                    "format": "email",
+                    "example": "denis.bestmentor@gmail.com"
+                  },
+                  "friendName": {
+                    "type": "string",
+                    "description": "Valid friend name",
+                    "example": "Denis Hvorostyaniy"
                   }
                 }
               }
             }
-          },
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful friend invitation",
@@ -588,34 +587,22 @@
                         "type": "string",
                         "description": "User's language",
                         "default": "ru",
-                        "enum": [
-                          "ru",
-                          "en",
-                          "ua"
-                        ],    
+                        "enum": ["ru", "en", "ua"],
                         "example": "en"
                       },
                       "theme": {
                         "type": "string",
                         "description": "User's application theme",
                         "default": "light",
-                        "enum": [
-                          "light",
-                          "dark"
-                        ],    
+                        "enum": ["light", "dark"],
                         "example": "light"
                       },
                       "currency": {
                         "type": "string",
                         "description": "User's selected currency",
                         "default": "UAH",
-                        "enum": [
-                          "UAH",
-                          "USD",
-                          "RUB",
-                          "EUR"
-                        ],    
-                        "example":  "UAH"
+                        "enum": ["UAH", "USD", "RUB", "EUR"],
+                        "example": "UAH"
                       }
                     }
                   }
@@ -633,81 +620,67 @@
       "UserUpdateRequest": {
         "type": "object",
         "properties": {
-              "fullName": {
-                "type": "object",
-                "properties": {
-                  "firstName": {
-                    "type": "string",
-                    "description": "User first name",
-                    "default": null,
-                    "example": "John"
-                  },
-                  "lastName": {
-                    "type": "string",
-                    "description": "User last name",
-                    "default": null,
-                    "example": "Doe"
-                  }
-                }
-              },
-              "balance": {
-                "type": "integer",
-                "format": "int32",
-                "description": "User balance !!! Allow to be set up ONLY one time after registration !!!",
-                "default": 0,
-                "example": 15000
-              },
-              "phone": {
+          "fullName": {
+            "type": "object",
+            "properties": {
+              "firstName": {
                 "type": "string",
-                "description": "User phone number",
+                "description": "User first name",
                 "default": null,
-                "example": "+38(050)1234567"
+                "example": "John"
               },
-              "avatar": {
+              "lastName": {
                 "type": "string",
-                "description": "User avatar",
+                "description": "User last name",
                 "default": null,
-                "example": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org"
+                "example": "Doe"
+              }
+            }
+          },
+          "balance": {
+            "type": "integer",
+            "format": "int32",
+            "description": "User balance !!! Allow to be set up ONLY one time after registration !!!",
+            "default": 0,
+            "example": 15000
+          },
+          "phone": {
+            "type": "string",
+            "description": "User phone number",
+            "default": null,
+            "example": "+38(050)1234567"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "User avatar",
+            "default": null,
+            "example": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org"
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "language": {
+                "type": "string",
+                "description": "User's language",
+                "default": "ru",
+                "enum": ["ru", "en", "ua"],
+                "example": "en"
               },
-              "settings": {
-                "type": "object",
-                "properties": {
-                  "language": {
-                    "type": "string",
-                    "description": "User's language",
-                    "default": "ru",
-                    "enum": [
-                      "ru",
-                      "en",
-                      "ua"
-                    ],    
-                    "example": "en"
-                  },
-                  "theme": {
-                    "type": "string",
-                    "description": "User's application theme",
-                    "default": "light",
-                    "enum": [
-                      "light",
-                      "dark"
-                    ],    
-                    "example": "light"
-                  },
-                  "currency": {
-                    "type": "string",
-                    "description": "User's selected currency",
-                    "default": "UAH",
-                    "enum": [
-                      "UAH",
-                      "USD",
-                      "RUB",
-                      "EUR"
-                    ],    
-                    "example":  "UAH"
-                  }
-                }
-              
-            
+              "theme": {
+                "type": "string",
+                "description": "User's application theme",
+                "default": "light",
+                "enum": ["light", "dark"],
+                "example": "light"
+              },
+              "currency": {
+                "type": "string",
+                "description": "User's selected currency",
+                "default": "UAH",
+                "enum": ["UAH", "USD", "RUB", "EUR"],
+                "example": "UAH"
+              }
+            }
           }
         }
       },
@@ -722,7 +695,21 @@
           },
           "category": {
             "type": "string",
-            "enum": ["salary", "additional", "products", "alcohol", "entertainment", "healthy", "transport", "home", "technic", "communication", "hobby", "education", "other"],
+            "enum": [
+              "salary",
+              "additional",
+              "products",
+              "alcohol",
+              "entertainment",
+              "healthy",
+              "transport",
+              "home",
+              "technic",
+              "communication",
+              "hobby",
+              "education",
+              "other"
+            ],
             "description": "Category of user's transaction",
             "example": "products"
           },
