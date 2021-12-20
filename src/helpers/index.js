@@ -6,7 +6,13 @@ const {
   getAmountDifference,
 } = require('./controller.helpers');
 
-const { isDuplicateKeyError, getCategories, formattedDate, checkFieldsOnUserUpdate } = require('./service.helpers');
+const {
+  isDuplicateKeyError,
+  getCategories,
+  formattedDate,
+  checkFieldsOnUserUpdate,
+  generatePhoneCode,
+} = require('./service.helpers');
 
 const {
   responseErrorOrNext,
@@ -36,4 +42,5 @@ module.exports = {
   getAmountDifference,
   checkFieldsOnUserUpdate,
   clearTempFolder,
+  generatePhoneCode,
 };
