@@ -6,11 +6,13 @@ const { isErrorOrFalsyValue, responseWithError } = require('../../helpers');
 const refresh = async (req, res, next) => {
   const { refreshToken } = req.cookies;
 
-  const { user, tokens } = await UserService.refresh(refreshToken);
+  const refreshData = await UserService.refresh(refreshToken);
 
-  if (isErrorOrFalsyValue(user)) {
-    return responseWithError(user, next);
+  if (isErrorOrFalsyValue(refreshData)) {
+    return responseWithError(refreshData, next);
   }
+
+  const { user, tokens } = refreshData;
 
   const userData = UserDTO.getUserInfoWithToken({ user, tokens });
 
