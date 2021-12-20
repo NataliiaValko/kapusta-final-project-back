@@ -1,14 +1,7 @@
-const nodemailer = require("nodemailer");
-const {
-  SMTP_HOST,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  SMTP_USER,
-  APP_LINK,
-  BACKEND_APP_URL,
-} = require("../../config");
-const { prepareRegistrationMail } = require("./registration.mail");
-const { prepareInvitationMail } = require("./invitation.mail");
+const nodemailer = require('nodemailer');
+const { SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER, FRONTEND_APP_URL, BACKEND_APP_URL } = require('../../config');
+const { prepareRegistrationMail } = require('./registration.mail');
+const { prepareInvitationMail } = require('./invitation.mail');
 
 class MailService {
   constructor() {
@@ -24,24 +17,24 @@ class MailService {
   }
 
   async sendActivationMail(to, verificationToken) {
-    console.log("verificationToken", verificationToken);
+    console.log('verificationToken', verificationToken);
 
     return await this.transporter.sendMail({
       from: SMTP_USER,
       to,
-      subject: "Please confirm your registration!",
-      text: "",
+      subject: 'Please confirm your registration!',
+      text: '',
       html: prepareRegistrationMail(BACKEND_APP_URL, verificationToken),
     });
   }
 
-  async sendInvitationMail(userName, friendName = "friend", friendEmail) {
+  async sendInvitationMail(userName, friendName = 'friend', friendEmail) {
     return await this.transporter.sendMail({
       from: SMTP_USER,
       to: friendEmail,
-      subject: "Your friend invites to join Kapu$ta App!",
-      text: "",
-      html: prepareInvitationMail(friendName, userName, APP_LINK),
+      subject: 'Your friend invites to join Kapu$ta App!',
+      text: '',
+      html: prepareInvitationMail(friendName, userName, FRONTEND_APP_URL),
     });
   }
 }

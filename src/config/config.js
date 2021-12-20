@@ -18,6 +18,7 @@ const {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
+  FRONTEND_APP_URL,
 } = process.env;
 
 module.exports = {
@@ -37,4 +38,5 @@ module.exports = {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
+  FRONTEND_APP_URL,
 };

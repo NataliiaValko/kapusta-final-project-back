@@ -14,12 +14,12 @@ const {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
+  FRONTEND_APP_URL,
 } = require('./config');
 const {
   SALT_COUNT,
   ACCESS_EXPIRES_IN,
   REFRESH_EXPIRES_IN,
-  APP_LINK,
   COOKIE_MAX_AGE,
   LANGUAGE_ENUM,
   THEME_ENUM,
@@ -50,7 +50,6 @@ module.exports = {
   JWT_REFRESH_SECRET,
   ACCESS_EXPIRES_IN,
   REFRESH_EXPIRES_IN,
-  APP_LINK,
   COOKIE_MAX_AGE,
   cookieOptions,
   LANGUAGE_ENUM,
@@ -74,4 +73,5 @@ module.exports = {
   uploadConfig,
   corsOptions,
   ALLOWED_DOMAINS,
+  FRONTEND_APP_URL,
 };
