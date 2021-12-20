@@ -15,6 +15,8 @@ const {
   GOOGLE_REDIRECT_URL,
   GOOGLE_REFRESH_TOKEN,
   FRONTEND_APP_URL,
+  TWILIO_ACCOUNT_CID,
+  TWILIO_AUTH_TOKEN,
 } = require('./config');
 const {
   SALT_COUNT,
@@ -74,4 +76,6 @@ module.exports = {
   corsOptions,
   ALLOWED_DOMAINS,
   FRONTEND_APP_URL,
+  TWILIO_ACCOUNT_CID,
+  TWILIO_AUTH_TOKEN,
 };

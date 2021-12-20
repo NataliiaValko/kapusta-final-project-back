@@ -29,7 +29,7 @@ const getAll = async ({ user: { _id, balance } }, query) => {
 
           return [...acc];
         }, [])
-        .concat({ total });
+        .concat({ total, balance });
     }
 
     return transactions
