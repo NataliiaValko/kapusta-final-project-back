@@ -5,6 +5,7 @@ const {
   joiInviteSchema,
   joiUserUpdateSchema,
   joiTransactionSchema,
+  joiPhoneVerificationSchema,
 } = require('./joi.schemas');
 
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
   joiTransactionSchema,
   joiInviteSchema,
   joiUserUpdateSchema,
+  joiPhoneVerificationSchema,
 };

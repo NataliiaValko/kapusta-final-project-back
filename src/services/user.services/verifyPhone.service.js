@@ -5,7 +5,13 @@ const { generatePhoneCode } = require('../../helpers');
 
 const verifyPhone = async (_id, phone, code) => {
   try {
-    if (!code) {
+    const { phoneVerified } = await User.findById(_id);
+
+    if (phoneVerified) {
+      return new BadRequest('Phone number already verified');
+    }
+
+    if (code === undefined) {
       const verificationCode = generatePhoneCode();
 
       await User.findByIdAndUpdate(
@@ -16,8 +22,7 @@ const verifyPhone = async (_id, phone, code) => {
         { new: true }
       );
 
-      const res = await smsService.sendCodeInMessage(phone, code);
-      console.log('sms res', res);
+      const res = await smsService.sendCodeInMessage(phone, verificationCode);
 
       return res;
     }
@@ -26,7 +31,13 @@ const verifyPhone = async (_id, phone, code) => {
 
     return verificationCode.toString() !== code.toString()
       ? new BadRequest('Wrong verification code')
-      : { success: true };
+      : await User.findByIdAndUpdate(
+          _id,
+          {
+            phoneVerified: true,
+          },
+          { new: true }
+        );
   } catch (error) {
     return error;
   }

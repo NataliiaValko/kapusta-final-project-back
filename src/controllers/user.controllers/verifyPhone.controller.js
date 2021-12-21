@@ -7,14 +7,15 @@ const verifyPhone = async (req, res, next) => {
     user: { _id },
   } = req.body;
 
-  if ('code' in body) {
+  if ('code' in req.body) {
+    const { code } = req.body;
     const user = await UserService.verifyPhone(_id, phone, code);
 
     if (isErrorOrFalsyValue(user)) {
       return responseWithError(user, next);
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Verification successful',
     });
   }
