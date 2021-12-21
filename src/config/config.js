@@ -1,8 +1,8 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
 const {
-  MODE,
+  NODE_ENV,
   BACKEND_APP_URL,
   DB_URL,
   DB_NAME,
@@ -34,7 +34,7 @@ module.exports = {
   SMTP_PASSWORD,
   JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET,
-  MODE,
+  NODE_ENV,
   BACKEND_APP_URL,
   ACCESS_TOKEN_LIFETIME,
   GOOGLE_CLIENT_ID,

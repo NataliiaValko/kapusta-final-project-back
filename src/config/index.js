@@ -8,7 +8,7 @@ const {
   SMTP_PASSWORD,
   JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET,
-  MODE,
+  NODE_ENV,
   BACKEND_APP_URL,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
@@ -18,7 +18,7 @@ const {
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
   TWILIO_MESSAGING_SID,
-} = require('./config');
+} = require("./config");
 const {
   SALT_COUNT,
   ACCESS_EXPIRES_IN,
@@ -36,9 +36,9 @@ const {
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
   ALLOWED_DOMAINS,
-} = require('./constants');
-const { connectDatabase } = require('./db.connect');
-const { cookieOptions, corsOptions, uploadConfig } = require('./options');
+} = require("./constants");
+const { connectDatabase } = require("./db.connect");
+const { cookieOptions, corsOptions, uploadConfig } = require("./options");
 
 module.exports = {
   DB_URL,
@@ -63,7 +63,7 @@ module.exports = {
   INCOME_CATEGORIES,
   OPERATION_TYPES,
   ALL_CATEGORIES,
-  MODE,
+  NODE_ENV,
   BACKEND_APP_URL,
   connectDatabase,
   GOOGLE_CLIENT_ID,
