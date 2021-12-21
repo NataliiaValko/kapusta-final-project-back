@@ -12,7 +12,7 @@ class SmsService {
 
   async sendCodeInMessage(phone, code) {
     const message = await this.client.messages.create({
-      body: `Kapu$ta App: your verification code ${code}`,
+      body: `Kapu$ta App:\nYour verification code: ${code}`,
       messagingServiceSid: TWILIO_MESSAGING_SID,
       to: phone,
     });

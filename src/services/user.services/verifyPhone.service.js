@@ -1,43 +1,42 @@
-const { BadRequest } = require('http-errors');
-const { User } = require('../../model');
-const { smsService } = require('../sms.service/sms.service');
-const { generatePhoneCode } = require('../../helpers');
+const { BadRequest } = require("http-errors");
+const { User } = require("../../model");
+const { smsService } = require("../sms.service/sms.service");
+const { generatePhoneCode } = require("../../helpers");
 
 const verifyPhone = async (_id, phone, code) => {
   try {
     const { phoneVerified } = await User.findById(_id);
 
     if (phoneVerified) {
-      return new BadRequest('Phone number already verified');
+      return new BadRequest("Phone number already verified");
     }
 
     if (code === undefined) {
       const verificationCode = generatePhoneCode();
 
-      await User.findByIdAndUpdate(
-        _id,
-        {
-          verificationCode,
-        },
-        { new: true }
-      );
+      await User.findByIdAndUpdate(_id, {
+        verificationCode,
+      });
 
-      const res = await smsService.sendCodeInMessage(phone, verificationCode);
-
-      return res;
+      return await smsService.sendCodeInMessage(phone, verificationCode);
     }
 
     const { verificationCode } = await User.findById(_id);
 
-    return verificationCode.toString() !== code.toString()
-      ? new BadRequest('Wrong verification code')
-      : await User.findByIdAndUpdate(
-          _id,
-          {
-            phoneVerified: true,
-          },
-          { new: true }
-        );
+    if (verificationCode.toString() !== code.toString()) {
+      return new BadRequest("Wrong verification code");
+    }
+
+    const user = await User.findByIdAndUpdate(
+      _id,
+      {
+        phoneVerified: true,
+        verificationCode: null,
+      },
+      { new: true }
+    );
+
+    return user;
   } catch (error) {
     return error;
   }
