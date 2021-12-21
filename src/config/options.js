@@ -8,7 +8,6 @@ const { NODE_ENV } = require("./config");
 
 const cookieOptions = {
   maxAge: COOKIE_MAX_AGE,
-  httpOnly: true,
   secure: NODE_ENV !== "development",
   sameSite: NODE_ENV === "development" ? false : "none",
 };

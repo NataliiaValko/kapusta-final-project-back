@@ -28,6 +28,10 @@
   ],
   "tags": [
     {
+      "name": "Auth",
+      "description": "User's auth operations"
+    },
+    {
       "name": "Users",
       "description": "Users operations"
     },
@@ -39,7 +43,7 @@
   "paths": {
     "/users/registration": {
       "post": {
-        "tags": ["Users"],
+        "tags": ["Auth"],
         "summary": "Register new user",
         "description": "This can only be done by not already registered user.",
         "operationId": "registration",
@@ -50,22 +54,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "Valid email with min 2 domains",
-                    "required": true,
-                    "example": "john.doe@gmail.com",
-                    "format": "email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "required": true,
-                    "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
-                    "example": "Hello123-"
-                  }
-                }
+                "$ref": "#/components/schemas/UserRegistrationLoginRequest"
               }
             }
           }
@@ -165,7 +154,7 @@
     },
     "/users/login": {
       "post": {
-        "tags": ["Users"],
+        "tags": ["Auth"],
         "summary": "Login user into the application",
         "description": "This can only be done by user with verified email.",
         "operationId": "login",
@@ -176,22 +165,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "Valid email with min 2 domains",
-                    "required": true,
-                    "example": "john.doe@gmail.com",
-                    "format": "email"
-                  },
-                  "password": {
-                    "type": "string",
-                    "required": true,
-                    "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
-                    "example": "Hello123-"
-                  }
-                }
+                "$ref": "#/components/schemas/UserRegistrationLoginRequest"
               }
             }
           }
@@ -240,20 +214,12 @@
     },
     "/users/refresh": {
       "post": {
-        "tags": ["Users"],
+        "tags": ["Auth"],
         "summary": "Refresh tokens",
         "description": "Refresh user tokens in case of 401 Unauthorized server response",
         "operationId": "refresh",
         "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "refreshToken",
-            "in": "header",
-            "description": "Valid refreshToken from cookies",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "security": [{ "Bearer": [] }, { "refreshToken": [] }],
         "responses": {
           "200": {
             "description": "Successful refresh",
@@ -290,7 +256,7 @@
     },
     "/users/logout": {
       "get": {
-        "tags": ["Users"],
+        "tags": ["Auth"],
         "summary": "Logout current logged in user",
         "description": "Logout current logged in user",
         "operationId": "logout",
@@ -516,10 +482,408 @@
           }
         }
       }
+    },
+    "/users/phone-verify": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Verify user's phone by sms-service",
+        "description": "This can only be done by logged in user. First time client sends ONLY phone number. Than user receives code in SMS. Secondly, client sends same phone number and verification code as well.",
+        "operationId": "phone-verify",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "requestBody": {
+          "type": "object",
+          "description": "Valid phone number with/without verification code",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": {
+                    "type": "string",
+                    "description": "Valid phone number",
+                    "required": true,
+                    "example": "+380501234567"
+                  },
+                  "code": {
+                    "type": "string",
+                    "required": false,
+                    "description": "Verification 4-digit code sent in SMS on user's phone number by Twilio message-service",
+                    "example": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful user's phone verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Verification successfull"
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Code sent to user's phone number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Code sent"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some phone/code validation errors, Phone number already verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Phone number already verified",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all user's transactions with/without parameters",
+        "description": "Get all user's transactions with/without parameters of choosing (by type, category, start date and end date)",
+        "operationId": "get-transactions",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "description": "Type of user's transactions",
+              "required": false,
+              "enum": ["income", "expense"],
+              "example": "income"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string",
+              "description": "Category of user's transactions",
+              "required": false,
+              "enum": [
+                "salary",
+                "additional",
+                "products",
+                "alcohol",
+                "entertainment",
+                "healthy",
+                "transport",
+                "home",
+                "technic",
+                "communication",
+                "hobby",
+                "education",
+                "other"
+              ],
+              "example": "salary"
+            }
+          },
+          {
+            "in": "query",
+            "name": "comment",
+            "schema": {
+              "type": "string",
+              "description": "Description (comment) of user's transactions",
+              "required": false,
+              "example": "beer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "startDate",
+            "schema": {
+              "type": "string",
+              "description": "Date parameter for definition start date for searching in all user's transactions",
+              "required": false,
+              "example": "2021-01-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "schema": {
+              "type": "string",
+              "description": "Date parameter for definition end date for searching in all user's transactions",
+              "required": false,
+              "example": "2021-12-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful user's searching transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some parameters validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "JOI error message: some parameters validation errors",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}": {
+      "patch": {
+        "tags": ["Transactions"],
+        "summary": "Update user's single transaction by Id",
+        "description": "Update user's single transaction by Id. Allow to edit category, comment, amount, date. NB! not allows to update transaction type.",
+        "operationId": "update-transactions",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "type": "string",
+            "description": "Transaction ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "type": "object",
+          "description": "Valid transaction update body object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful transactions update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionUpdateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some parameters validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "JOI error message: some parameters validation errors",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/:{transactionId}": {
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete user's single transaction by Id",
+        "description": "Delete user's single transaction by Id.",
+        "operationId": "delete-transaction",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "type": "string",
+            "description": "Transaction ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful transaction delete"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Transaction not found",
+                    "status": "Error",
+                    "code": "404"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/categories": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get user's transactions details with date parameters",
+        "description": "Get user's transactions detailed information with counting of amount by categories with date parameters.",
+        "operationId": "categories-transactions",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "startDate",
+            "schema": {
+              "type": "string",
+              "description": "Date parameter for definition start date for searching in all user's transactions",
+              "required": false,
+              "example": "2021-01-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "schema": {
+              "type": "string",
+              "description": "Date parameter for definition end date for searching in all user's transactions",
+              "required": false,
+              "example": "2021-12-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful transactions search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Detailed transactions response",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "description": "Detailed transactions data",
+                      "example": [
+                        {
+                          "category": "salary",
+                          "total": 18000,
+                          "type": "income",
+                          "details": [
+                            {
+                              "salary": 10000,
+                              "additional": 8000
+                            }
+                          ]
+                        },
+                        {
+                          "category": "products",
+                          "total": 1200,
+                          "type": "expense",
+                          "details": [
+                            {
+                              "chips": 300,
+                              "potato": 500,
+                              "tomato": 400
+                            }
+                          ]
+                        },
+                        {
+                          "category": "hobby",
+                          "total": 2200,
+                          "type": "expense",
+                          "details": [
+                            {
+                              "flute": 200,
+                              "dance": 1000,
+                              "art": 1000
+                            }
+                          ]
+                        },
+                        {
+                          "total": 16800
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Some parameters validation errors / Cannot update transaction's type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "JOI error message: some parameters validation errors",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "UserRegistrationLoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Valid email with min 2 domains",
+            "required": true,
+            "example": "john.doe@gmail.com",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "required": true,
+            "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
+            "example": "Hello123-"
+          }
+        }
+      },
       "UserLoginResponse": {
         "type": "object",
         "properties": {
@@ -684,6 +1048,185 @@
           }
         }
       },
+      "TransactionsResponse": {
+        "type": "object",
+        "description": "All user's transactions",
+        "properties": {
+          "transactions": {
+            "type": "object",
+            "description": "Transactions of user",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Total sum of all showed transactions (adding income, subtracting expense)",
+                "example": 12300
+              },
+              "balance": {
+                "type": "integer",
+                "format": "int32",
+                "description": "User's current balance",
+                "example": 25200
+              },
+              "transaction": {
+                "type": "object",
+                "description": "User's current balance",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["expense", "income"],
+                    "description": "Type of user's transaction",
+                    "example": "expense"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "salary",
+                      "additional",
+                      "products",
+                      "alcohol",
+                      "entertainment",
+                      "healthy",
+                      "transport",
+                      "home",
+                      "technic",
+                      "communication",
+                      "hobby",
+                      "education",
+                      "other"
+                    ],
+                    "description": "Category of user's transaction",
+                    "example": "products"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Description of user's transaction",
+                    "example": "Pork",
+                    "default": ""
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Amount of user's transaction",
+                    "example": 1000
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Date of user's transaction",
+                    "example": "2021-12-12"
+                  }
+                }
+              }
+            },
+            "example": [
+              {
+                "_id": "61994bf6c2b3164f924883dc",
+                "type": "income",
+                "category": "Salary",
+                "comment": "My salary",
+                "amount": 10000,
+                "date": "2021-02-01",
+                "owner": "61994b7dc2b3164f924883cc",
+                "createdAt": "2021-11-20T19:26:46.106Z",
+                "updatedAt": "2021-11-20T19:26:46.106Z"
+              },
+              {
+                "_id": "61994c12c2b3164f924883e0",
+                "type": "expense",
+                "category": "products",
+                "comment": "chips",
+                "amount": 100,
+                "date": "2021-02-01",
+                "owner": "61994b7dc2b3164f924883cc",
+                "createdAt": "2021-11-20T19:26:46.106Z",
+                "updatedAt": "2021-11-20T19:26:46.106Z"
+              },
+              {
+                "_id": "61994c12c2b3164f924883e0",
+                "type": "expense",
+                "category": "hobby",
+                "comment": "bike",
+                "amount": 2570,
+                "date": "2021-02-01",
+                "owner": "61994b7dc2b3164f924883cc",
+                "createdAt": "2021-11-20T19:26:46.106Z",
+                "updatedAt": "2021-11-20T19:26:46.106Z"
+              },
+              {
+                "total": 12300,
+                "balance": 25200
+              }
+            ]
+          }
+        }
+      },
+      "TransactionUpdateResponse": {
+        "type": "object",
+        "description": "All user's transactions",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Updated transaction data",
+            "properties": {
+              "transaction": {
+                "type": "object",
+                "description": "User's current balance",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["expense", "income"],
+                    "description": "Type of user's transaction",
+                    "example": "expense"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "salary",
+                      "additional",
+                      "products",
+                      "alcohol",
+                      "entertainment",
+                      "healthy",
+                      "transport",
+                      "home",
+                      "technic",
+                      "communication",
+                      "hobby",
+                      "education",
+                      "other"
+                    ],
+                    "description": "Category of user's transaction",
+                    "example": "products"
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Description of user's transaction",
+                    "example": "Pork",
+                    "default": ""
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Amount of user's transaction",
+                    "example": 1000
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "Date of user's transaction",
+                    "example": "2021-12-12"
+                  }
+                }
+              },
+              "balance": {
+                "type": "integer",
+                "format": "int32",
+                "description": "User's current balance",
+                "example": 25200
+              }
+            }
+          }
+        }
+      },
       "TransactionObject": {
         "type": "object",
         "properties": {
@@ -740,8 +1283,9 @@
         "bearerFormat": "JWT"
       },
       "refreshToken": {
-        "type": "http",
+        "type": "apiKey",
         "scheme": "bearer",
+        "in": "cookie",
         "bearerFormat": "JWT"
       }
     }
