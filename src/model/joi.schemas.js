@@ -1,15 +1,15 @@
-const joi = require('joi');
-const PasswordComplexity = require('joi-password-complexity');
+const joi = require("joi");
+const PasswordComplexity = require("joi-password-complexity");
 const {
   LANGUAGE_ENUM,
   THEME_ENUM,
   CURRENCY_ENUM,
   OPERATION_TYPES,
-  ALL_CATEGORIES,
   INCOME_CATEGORIES,
   EXPENSE_CATEGORIES,
-} = require('../config');
-const { EnumDTO } = require('../DTO');
+} = require("../config");
+const { EnumDTO } = require("../DTO");
+const { phonePattern } = require("../helpers");
 
 const LangEnum = EnumDTO.getSchemaEnum(LANGUAGE_ENUM);
 const ThemeEnum = EnumDTO.getSchemaEnum(THEME_ENUM);
@@ -41,7 +41,7 @@ const joiUserUpdateSchema = joi.object({
     firstName: joi.string().max(30),
     lastName: joi.string().max(30),
   },
-  phone: joi.string().min(3).max(12),
+  phone: joi.string().pattern(phonePattern),
   avatar: joi.string(),
 
   settings: {
@@ -51,6 +51,9 @@ const joiUserUpdateSchema = joi.object({
   },
 
   balance: joi.number().positive(),
+
+  // THIS IS JUST FOR TESTING!!!
+  phoneVerified: joi.any(),
 
   user: joi.any(),
 });
@@ -69,7 +72,7 @@ const joiTransactionSchema = joi.object({
     .valid(...OperationsEnum)
     .required(),
 
-  category: joi.alternatives().conditional('type', {
+  category: joi.alternatives().conditional("type", {
     is: OperationsEnum[0],
     then: joi.valid(...IncomeEnum).required(),
     otherwise: joi.valid(...ExpenseEnum).required(),
@@ -84,9 +87,21 @@ const joiTransactionSchema = joi.object({
   user: joi.any(),
 });
 
+const joiPhoneVerificationSchema = joi.object({
+  phone: joi.string().pattern(phonePattern).required(),
+
+  code: joi
+    .string()
+    .length(4)
+    .pattern(/^[0-9]+$/),
+
+  user: joi.any(),
+});
+
 module.exports = {
   joiUserRegistrationSchema,
   joiInviteSchema,
   joiUserUpdateSchema,
   joiTransactionSchema,
+  joiPhoneVerificationSchema,
 };

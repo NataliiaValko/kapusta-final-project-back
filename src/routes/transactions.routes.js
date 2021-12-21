@@ -1,15 +1,15 @@
-const express = require('express');
-const { asyncWrapper } = require('../helpers');
-const { transactionController } = require('../controllers');
+const express = require("express");
+const { asyncWrapper } = require("../helpers");
+const { transactionController } = require("../controllers");
 const {
   authenticateUser,
   transactionAddValidation,
-} = require('../middlewares');
+} = require("../middlewares");
 
 const transactionRouter = express.Router();
 
 transactionRouter.post(
-  '/',
+  "/",
   asyncWrapper(
     authenticateUser,
     transactionAddValidation,
@@ -18,17 +18,17 @@ transactionRouter.post(
 );
 
 transactionRouter.get(
-  '/',
+  "/",
   asyncWrapper(authenticateUser, transactionController.getAll)
 );
 
 transactionRouter.delete(
-  '/:transactionId',
+  "/:transactionId",
   asyncWrapper(authenticateUser, transactionController.remove)
 );
 
 transactionRouter.patch(
-  '/:transactionId',
+  "/:transactionId",
   asyncWrapper(
     authenticateUser,
     transactionAddValidation,
@@ -37,14 +37,8 @@ transactionRouter.patch(
 );
 
 transactionRouter.get(
-  '/categories',
+  "/categories",
   asyncWrapper(authenticateUser, transactionController.getAllCategories)
 );
-
-// transactionRouter.get(
-//     "/get",
-//     asyncWrapper(authenticateUser, userValidation, transactionController.add)
-//   );
-// router.get("/get", asyncWrapper(transactionController.getAll));
 
 module.exports = { transactionRouter };

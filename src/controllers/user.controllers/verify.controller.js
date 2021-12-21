@@ -1,5 +1,11 @@
-const { UserService } = require('../../services');
-const { isErrorOrFalsyValue, responseWithError } = require('../../helpers');
+const path = require("path");
+const { UserService } = require("../../services");
+const { isErrorOrFalsyValue, responseWithError } = require("../../helpers");
+
+const successVerificationFile = path.join(
+  __dirname,
+  "../../static/success.html"
+);
 
 const verify = async (req, res, next) => {
   const { verificationToken } = req.params;
@@ -10,9 +16,7 @@ const verify = async (req, res, next) => {
     return responseWithError(user, next);
   }
 
-  res.status(200).json({
-    message: 'Verification successful',
-  });
+  res.sendFile(successVerificationFile);
 };
 
 module.exports = { verify };

@@ -1,10 +1,15 @@
-const multer = require('multer');
-const { COOKIE_MAX_AGE, TEMP_FOLDER_PATH, ALLOWED_DOMAINS } = require('./constants');
+const multer = require("multer");
+const {
+  COOKIE_MAX_AGE,
+  TEMP_FOLDER_PATH,
+  ALLOWED_DOMAINS,
+} = require("./constants");
+const { NODE_ENV } = require("./config");
 
 const cookieOptions = {
   maxAge: COOKIE_MAX_AGE,
-  httpOnly: true,
-  secure: true,
+  secure: NODE_ENV !== "development",
+  sameSite: NODE_ENV === "development" ? false : "none",
 };
 
 const corsOptions = {

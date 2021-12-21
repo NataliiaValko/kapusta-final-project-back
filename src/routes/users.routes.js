@@ -8,6 +8,7 @@ const {
   userInvitationValidation,
   userUpdateValidation,
   checkFilePresence,
+  userPhoneVerificationValidation,
 } = require('../middlewares');
 
 const userRouter = express.Router();
@@ -21,6 +22,9 @@ userRouter.post('/refresh', asyncWrapper(userController.refresh));
 userRouter.get('/current', asyncWrapper(authenticateUser, userController.current));
 userRouter.patch('/avatar', asyncWrapper(authenticateUser, checkFilePresence, userController.changeAvatar));
 userRouter.patch('/update', asyncWrapper(authenticateUser, userUpdateValidation, userController.update));
-// userRouter.get('/phone-verify', asyncWrapper(authenticateUser, userPhoneValidation, userController.verifyPhone));
+userRouter.patch(
+  '/phone-verify',
+  asyncWrapper(authenticateUser, userPhoneVerificationValidation, userController.verifyPhone)
+);
 
 module.exports = { userRouter };
