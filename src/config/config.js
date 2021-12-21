@@ -21,6 +21,7 @@ const {
   FRONTEND_APP_URL,
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
+  TWILIO_MESSAGING_SID,
 } = process.env;
 
 module.exports = {
@@ -43,4 +44,5 @@ module.exports = {
   FRONTEND_APP_URL,
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
+  TWILIO_MESSAGING_SID,
 };

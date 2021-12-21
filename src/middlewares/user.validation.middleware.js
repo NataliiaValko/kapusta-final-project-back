@@ -1,5 +1,10 @@
 const { responseErrorOrNext, validateObject } = require('../helpers');
-const { joiUserRegistrationSchema, joiInviteSchema, joiUserUpdateSchema } = require('../model');
+const {
+  joiUserRegistrationSchema,
+  joiInviteSchema,
+  joiUserUpdateSchema,
+  joiPhoneVerificationSchema,
+} = require('../model');
 
 const userValidation = async (req, res, next) => {
   const requiredFields = ['email', 'password'];
@@ -27,9 +32,16 @@ const userUpdateValidation = async (req, res, next) => {
   responseErrorOrNext(error, res, next);
 };
 
+const userPhoneVerificationValidation = async (req, res, next) => {
+  const { error } = validateObject(req.body, joiPhoneVerificationSchema);
+
+  responseErrorOrNext(error, res, next);
+};
+
 module.exports = {
   userValidation,
   userEmailValidation,
   userInvitationValidation,
   userUpdateValidation,
+  userPhoneVerificationValidation,
 };

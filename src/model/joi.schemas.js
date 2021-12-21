@@ -84,9 +84,24 @@ const joiTransactionSchema = joi.object({
   user: joi.any(),
 });
 
+const joiPhoneVerificationSchema = joi.object({
+  phone: joi
+    .string()
+    .pattern(/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/)
+    .required(),
+
+  code: joi
+    .string()
+    .length(4)
+    .pattern(/^[0-9]+$/),
+
+  user: joi.any(),
+});
+
 module.exports = {
   joiUserRegistrationSchema,
   joiInviteSchema,
   joiUserUpdateSchema,
   joiTransactionSchema,
+  joiPhoneVerificationSchema,
 };

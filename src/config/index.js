@@ -17,6 +17,7 @@ const {
   FRONTEND_APP_URL,
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
+  TWILIO_MESSAGING_SID,
 } = require('./config');
 const {
   SALT_COUNT,
@@ -78,4 +79,5 @@ module.exports = {
   FRONTEND_APP_URL,
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
+  TWILIO_MESSAGING_SID,
 };

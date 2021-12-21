@@ -7,14 +7,16 @@ const getCategories = (array, category) => {
 };
 
 const checkFieldsOnUserUpdate = (updateUserData, key) =>
-  updateUserData[key] !== undefined &&
-  key !== 'user' &&
-  key !== 'settings' &&
-  key !== 'fullName';
+  updateUserData[key] !== undefined && key !== 'user' && key !== 'settings' && key !== 'fullName';
+
+const generatePhoneCode = () => {
+  return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+};
 
 module.exports = {
   isDuplicateKeyError,
   getCategories,
   formattedDate,
   checkFieldsOnUserUpdate,
+  generatePhoneCode,
 };

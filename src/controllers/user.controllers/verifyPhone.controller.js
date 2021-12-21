@@ -2,16 +2,32 @@ const { UserService } = require('../../services');
 const { isErrorOrFalsyValue, responseWithError } = require('../../helpers');
 
 const verifyPhone = async (req, res, next) => {
-  const { phone } = req.body;
+  const {
+    phone,
+    user: { _id },
+  } = req.body;
 
-  const user = await UserService.verifyPhone(phone);
+  if ('code' in req.body) {
+    const { code } = req.body;
+    const user = await UserService.verifyPhone(_id, phone, code);
+
+    if (isErrorOrFalsyValue(user)) {
+      return responseWithError(user, next);
+    }
+
+    return res.status(200).json({
+      message: 'Verification successful',
+    });
+  }
+
+  const user = await UserService.verifyPhone(_id, phone);
 
   if (isErrorOrFalsyValue(user)) {
     return responseWithError(user, next);
   }
 
   res.status(200).json({
-    message: 'Verification successful',
+    message: 'Code sent',
   });
 };
 

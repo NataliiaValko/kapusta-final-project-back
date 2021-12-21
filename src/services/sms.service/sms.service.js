@@ -1,41 +1,29 @@
-// const { TWILIO_ACCOUNT_CID, TWILIO_AUTH_TOKEN } = require('../../config');
+const { TWILIO_ACCOUNT_CID, TWILIO_AUTH_TOKEN, TWILIO_MESSAGING_SID } = require('../../config');
+const client = require('twilio');
 
-// class SMSService {
-//   constructor() {
-//     this.transporter = nodemailer.createTransport({
-//       host: SMTP_HOST,
-//       port: SMTP_PORT,
-//       secure: false,
-//       auth: {
-//         user: SMTP_USER,
-//         pass: SMTP_PASSWORD,
-//       },
-//     });
-//   }
+class SmsService {
+  constructor() {
+    this.client = client(TWILIO_ACCOUNT_CID, TWILIO_AUTH_TOKEN);
+  }
 
-//   async sendActivationMail(to, verificationToken) {
-//     console.log('verificationToken', verificationToken);
+  async sendCodeInMessage(phone, code) {
+    const message = await this.client.messages.create({
+      body: `Kapu$ta App: your verification code ${code}`,
+      messagingServiceSid: TWILIO_MESSAGING_SID,
+      to: phone,
+    });
+    const sid = await message.sid;
+    return sid;
 
-//     return await this.transporter.sendMail({
-//       from: SMTP_USER,
-//       to,
-//       subject: 'Please confirm your registration!',
-//       text: '',
-//       html: prepareRegistrationMail(BACKEND_APP_URL, verificationToken),
-//     });
-//   }
+    //   .then((message) => {
+    //     return message.sid;
+    //   })
+    //   .done();
+    console.log('sent', code);
+    return { message: 'sent' };
+  }
+}
 
-//   async sendInvitationMail(userName, friendName = 'friend', friendEmail) {
-//     return await this.transporter.sendMail({
-//       from: SMTP_USER,
-//       to: friendEmail,
-//       subject: 'Your friend invites to join Kapu$ta App!',
-//       text: '',
-//       html: prepareInvitationMail(friendName, userName, FRONTEND_APP_URL),
-//     });
-//   }
-// }
+const smsService = new SmsService();
 
-// const mailService = new MailService();
-
-// module.exports = { SMSService };
+module.exports = { smsService };
