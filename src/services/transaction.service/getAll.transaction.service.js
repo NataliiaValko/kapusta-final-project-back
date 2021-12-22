@@ -24,11 +24,9 @@ const getAll = async ({ user: { _id, balance, isBalanceSetted } }, query) => {
       return transactions
         .reduce((acc, transaction) => {
           if (
-            formattedDate(transaction.date) < formattedDate(endDate) &&
-            formattedDate(transaction.date) > formattedDate(startDate)
+            formattedDate(transaction.date) < formattedDate(endDate) + 1 &&
+            formattedDate(transaction.date) > formattedDate(startDate) - 1
           ) {
-            console.log("here");
-
             transaction.type === "income"
               ? (total += transaction.amount)
               : (total -= transaction.amount);
