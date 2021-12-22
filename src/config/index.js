@@ -18,7 +18,7 @@ const {
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
   TWILIO_MESSAGING_SID,
-} = require("./config");
+} = require('./config');
 const {
   SALT_COUNT,
   ACCESS_EXPIRES_IN,
@@ -37,9 +37,9 @@ const {
   IMAGE_MIME_TYPES,
   ALLOWED_DOMAINS,
   MONTHES_ENUM,
-} = require("./constants");
-const { connectDatabase } = require("./db.connect");
-const { cookieOptions, corsOptions, uploadConfig } = require("./options");
+} = require('./constants');
+const { connectDatabase } = require('./db.connect');
+const { cookieOptions, corsOptions, uploadConfig } = require('./options');
 
 module.exports = {
   DB_URL,

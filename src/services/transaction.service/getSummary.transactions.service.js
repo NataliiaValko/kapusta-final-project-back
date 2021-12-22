@@ -1,48 +1,43 @@
-const { Transaction } = require("../../model");
+const { Transaction } = require('../../model');
+const { MONTHES_ENUM } = require('../../config');
 const {
   formattedDate,
-  getCategories,
-  getType,
-  prepareYearDate,
-} = require("../../helpers");
-const { MONTHES_ENUM } = require("../../config");
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+  getMonthIndexByDate,
+  initializeSummary,
+} = require('../../helpers');
 
-const getSummary = async ({ user: { _id } }, query) => {
+const getSummary = async ({ user: _id }, query) => {
   try {
-    const { year, type } = query;
+    if (!query?.year || !query?.type) {
+      return null;
+    }
 
-    const startYear = prepareYearDate(Number(year));
-    const endYear = prepareYearDate(Number(year) + 1);
+    const summary = initializeSummary(MONTHES_ENUM, query.type);
+    const transactionsByOwner = await Transaction.find({ owner: _id });
+    let total = 0;
 
-    const searchOptions = { owner: _id };
-    const transactionsByOwner = await Transaction.find(searchOptions);
+    const result = transactionsByOwner.reduce(
+      (acc, transaction) => {
+        const { type, amount, date } = transaction;
+        const monthIndex = getMonthIndexByDate(date);
+        const startDate = getFirstDayOfMonth(query.year, monthIndex);
+        const endDate = getLastDayOfMonth(query.year, monthIndex);
 
-    const data = transactionsByOwner.reduce((acc, transaction) => {
-      const { type, category, amount, comment } = transaction;
-      const date = formattedDate(transaction.date);
-      if (
-        date >= formattedDate(startYear) - 1 &&
-        date <= formattedDate(endYear) + 1
-      ) {
-        if (getType(acc, type)) {
-          const item = getCategories(acc, category);
-          item.total += amount;
-          item.details[comment]
-            ? (item.details[comment] += amount)
-            : (item.details[comment] = amount);
-        } else if (type) {
-          acc.push({
-            month: type,
-            category: category,
-            total: amount,
-            details: { [comment]: amount },
-          });
+        if (type === query.type && formattedDate(date) >= startDate && formattedDate(date) <= endDate) {
+          summary[monthIndex].total += amount;
+          total += amount;
         }
-      }
-      return [...acc];
-    }, []);
-    return data;
-  } catch (error) {}
+
+        return [...acc];
+      },
+      [...summary]
+    );
+    return { result, total };
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = { getSummary };
