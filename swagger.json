@@ -220,6 +220,25 @@
         "operationId": "refresh",
         "produces": ["application/json"],
         "security": [{ "Bearer": [] }, { "refreshToken": [] }],
+        "requestBody": {
+          "type": "object",
+          "required": true,
+          "description": "Valid user refresh body object with refresh token",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "description": "User's refresh token from server",
+                    "example": "eyJhbGciOiJIUzAqeqwIsInR5cCWqwekpXVC.eyJwZX"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful refresh",
@@ -232,7 +251,7 @@
             }
           },
           "400": {
-            "description": "Error in refresh token in cookie",
+            "description": "Error in refresh/access tokens",
             "schema": {
               "example": {
                 "message": "Bad request",
@@ -262,6 +281,25 @@
         "operationId": "logout",
         "security": [{ "Bearer": [] }, { "refreshToken": [] }],
         "produces": ["application/json"],
+        "requestBody": {
+          "type": "object",
+          "required": true,
+          "description": "Valid user logout body object with refresh token",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "description": "User's refresh token from server",
+                    "example": "eyJhbGciOiJIUzAqeqwIsInR5cCWqwekpXVC.eyJwZX"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "204": {
             "description": "Successful logout"
@@ -971,13 +1009,18 @@
                     }
                   }
                 }
+              },
+              "accessToken": {
+                "type": "string",
+                "description": "User's access token from server",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYX"
+              },
+              "refreshToken": {
+                "type": "string",
+                "description": "User's refresh token from server",
+                "example": "eyJhbGciOiJIUzAqeqwIsInR5cCWqwekpXVC.eyJwZX"
               }
             }
-          },
-          "accessToken": {
-            "type": "string",
-            "description": "User's access token from server",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYX"
           }
         }
       },
