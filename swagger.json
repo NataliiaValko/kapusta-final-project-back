@@ -38,6 +38,10 @@
     {
       "name": "Transactions",
       "description": "Transactions operations"
+    },
+    {
+      "name": "Developers",
+      "description": "Developers operations"
     }
   ],
   "paths": {
@@ -219,7 +223,7 @@
         "description": "Refresh user tokens in case of 401 Unauthorized server response",
         "operationId": "refresh",
         "produces": ["application/json"],
-        "security": [{ "Bearer": [] }, { "refreshToken": [] }],
+        "security": [{ "Bearer": [] }],
         "requestBody": {
           "type": "object",
           "required": true,
@@ -279,7 +283,7 @@
         "summary": "Logout current logged in user",
         "description": "Logout current logged in user",
         "operationId": "logout",
-        "security": [{ "Bearer": [] }, { "refreshToken": [] }],
+        "security": [{ "Bearer": [] }],
         "produces": ["application/json"],
         "requestBody": {
           "type": "object",
@@ -321,6 +325,37 @@
                 "message": "User not found",
                 "status": "Error",
                 "code": "404"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google authorization",
+        "description": "Google authorization",
+        "operationId": "google-auth",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successful authorization with Google",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserGoogleAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "example": {
+                "message": "Bad request",
+                "status": "Error",
+                "code": "400"
               }
             }
           }
@@ -828,7 +863,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful transactions search",
+            "description": "Successful details of transactions response",
             "content": {
               "application/json": {
                 "schema": {
@@ -897,6 +932,31 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/developers/": {
+      "get": {
+        "tags": ["Developers"],
+        "summary": "Get all developers",
+        "description": "Get array of devs - information about developers",
+        "operationId": "get-developers",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevelopersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -1021,6 +1081,53 @@
                 "example": "eyJhbGciOiJIUzAqeqwIsInR5cCWqwekpXVC.eyJwZX"
               }
             }
+          }
+        }
+      },
+      "UserGoogleAuthResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "User email",
+                "example": "john.doe@gmail.com"
+              },
+              "fullName": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "User first name",
+                    "default": null,
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "User last name",
+                    "default": null,
+                    "example": "Doe"
+                  }
+                }
+              }
+            }
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "User's access token from server",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYX"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token from server",
+            "example": "eyJhbGciOiJIUzAqeqwIsInR5cCWqwekpXVC.eyJwZX"
           }
         }
       },
@@ -1317,18 +1424,114 @@
             "example": "2021-12-12"
           }
         }
+      },
+      "DevelopersResponse": {
+        "type": "object",
+        "description": "All developers",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Developer object",
+            "properties": {
+              "fullName": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "Developer's first name",
+                    "example": "Bill"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "Developer's last name",
+                    "example": "Gates"
+                  }
+                }
+              },
+              "_id": {
+                "type": "string",
+                "description": "Developer's ID",
+                "example": "61ae3def08ce2620f4b47914"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "Developer's avatar URL",
+                "example": "https://live.staticflickr.com/65535/51357338839_fc0b295628_m.jpg"
+              },
+              "role": {
+                "type": "object",
+                "description": "Developer's role",
+                "enum": [
+                  "Backend Developer",
+                  "Frontend Developer",
+                  "Scrum Master",
+                  "Team Lead"
+                ],
+                "example": ["Backend Developer"]
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Developer's email",
+                "example": "bill.gates@gmail.com"
+              },
+              "linkedinLink": {
+                "type": "string",
+                "description": "Developer's LinkedIn Profile Link",
+                "example": "https://www.linkedin.com/in/bill-gates-118405aa/"
+              },
+              "gitLink": {
+                "type": "string",
+                "description": "Developer's Git Hub Profile Link",
+                "example": "https://github.com/bill-gates/"
+              }
+            },
+            "example": [
+              {
+                "fullName": {
+                  "firstName": "Volodymyr",
+                  "lastName": "Marchuk"
+                },
+                "_id": "61ae3def08ce2620f4b47911",
+                "avatarUrl": "https://live.staticflickr.com/65535/51355167858_ab0f985c23_n.jpg",
+                "role": ["Backend Developer"],
+                "email": "mr.volodymyr.marchuk@gmail.com",
+                "linkedinLink": "https://www.linkedin.com/in/volodymyr-marchuk-a0592320a/",
+                "gitLink": "https://github.com/vomarchuk"
+              },
+              {
+                "fullName": {
+                  "firstName": "Nataliia",
+                  "lastName": "Valko"
+                },
+                "_id": "61ae3def08ce2620f4b47912",
+                "avatarUrl": "https://live.staticflickr.com/65535/51356630753_5f59dec961_n.jpg",
+                "role": ["Team Lead", "Frontend Developer"],
+                "email": "nataliiavalko.vnv@gmail.com",
+                "linkedinLink": "https://www.linkedin.com/in/nataliia-valko-951501212/",
+                "gitLink": "https://github.com/NataliiaValko"
+              },
+              {
+                "fullName": {
+                  "firstName": "Nikolay",
+                  "lastName": "Mosalov"
+                },
+                "_id": "61ae3def08ce2620f4b47913",
+                "avatarUrl": "https://live.staticflickr.com/65535/51355167828_34e6d20320_n.jpg",
+                "role": ["Scrum Master", "Frontend Developer"],
+                "email": "Mosalov85@gmail.com",
+                "linkedinLink": "https://www.linkedin.com/in/nikolay-mosalov-66679b212/",
+                "gitLink": "https://github.com/Rom-dev-tech"
+              }
+            ]
+          }
+        }
       }
     },
     "securitySchemes": {
       "Bearer": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
-      },
-      "refreshToken": {
-        "type": "apiKey",
-        "scheme": "bearer",
-        "in": "cookie",
         "bearerFormat": "JWT"
       }
     }
