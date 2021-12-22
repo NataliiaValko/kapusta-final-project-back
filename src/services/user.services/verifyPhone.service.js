@@ -1,15 +1,15 @@
-const { BadRequest } = require("http-errors");
-const { User } = require("../../model");
-const { smsService } = require("../sms.service/sms.service");
-const { generatePhoneCode } = require("../../helpers");
+const { BadRequest } = require('http-errors');
+const { User } = require('../../model');
+const { smsService } = require('../sms.service/sms.service');
+const { generatePhoneCode } = require('../../helpers');
 
 const verifyPhone = async (_id, phone, code) => {
   try {
-    const { phoneVerified } = await User.findById(_id);
+    // const { phoneVerified } = await User.findById(_id);
 
-    if (phoneVerified) {
-      return new BadRequest("Phone number already verified");
-    }
+    // if (phoneVerified) {
+    //   return new BadRequest("Phone number already verified");
+    // }
 
     if (code === undefined) {
       const verificationCode = generatePhoneCode();
@@ -24,7 +24,7 @@ const verifyPhone = async (_id, phone, code) => {
     const { verificationCode } = await User.findById(_id);
 
     if (verificationCode.toString() !== code.toString()) {
-      return new BadRequest("Wrong verification code");
+      return new BadRequest('Wrong verification code');
     }
 
     const user = await User.findByIdAndUpdate(
