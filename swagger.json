@@ -936,6 +936,54 @@
         }
       }
     },
+    "/transactions/summary": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get total amount of user's transactions by type and by year",
+        "description": "Get total amount of user's transactions by type and by months of year in parameters",
+        "operationId": "summary-transactions",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "description": "Type of user's transactions",
+              "required": true,
+              "enum": ["income", "expense"],
+              "example": "income"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "schema": {
+              "type": "string",
+              "description": "Year for searching of user's transactions",
+              "required": true,
+              "example": "2021"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful user's searching transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/developers/": {
       "get": {
         "tags": ["Developers"],
@@ -1422,6 +1470,138 @@
             "type": "string",
             "description": "Date of user's transaction",
             "example": "2021-12-12"
+          }
+        }
+      },
+      "TransactionsSummaryResponse": {
+        "type": "object",
+        "description": "Summary by type and year for user's transactions",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Developer object",
+            "properties": {
+              "fullName": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "Developer's first name",
+                    "example": "Bill"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "Developer's last name",
+                    "example": "Gates"
+                  }
+                }
+              },
+              "_id": {
+                "type": "string",
+                "description": "Developer's ID",
+                "example": "61ae3def08ce2620f4b47914"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "Developer's avatar URL",
+                "example": "https://live.staticflickr.com/65535/51357338839_fc0b295628_m.jpg"
+              },
+              "role": {
+                "type": "object",
+                "description": "Developer's role",
+                "enum": [
+                  "Backend Developer",
+                  "Frontend Developer",
+                  "Scrum Master",
+                  "Team Lead"
+                ],
+                "example": ["Backend Developer"]
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Developer's email",
+                "example": "bill.gates@gmail.com"
+              },
+              "linkedinLink": {
+                "type": "string",
+                "description": "Developer's LinkedIn Profile Link",
+                "example": "https://www.linkedin.com/in/bill-gates-118405aa/"
+              },
+              "gitLink": {
+                "type": "string",
+                "description": "Developer's Git Hub Profile Link",
+                "example": "https://github.com/bill-gates/"
+              }
+            },
+            "example": {
+              "message": "success",
+              "data": {
+                  "result": [
+                      {
+                          "month": "january",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "february",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "march",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "april",
+                          "type": "expense",
+                          "total": 1300
+                      },
+                      {
+                          "month": "may",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "june",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "july",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "august",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "september",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "october",
+                          "type": "expense",
+                          "total": 800
+                      },
+                      {
+                          "month": "november",
+                          "type": "expense",
+                          "total": 0
+                      },
+                      {
+                          "month": "december",
+                          "type": "expense",
+                          "total": 0
+                      }
+                  ],
+                  "total": 2100
+              }
+            }
           }
         }
       },
