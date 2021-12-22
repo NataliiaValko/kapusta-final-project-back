@@ -1,5 +1,5 @@
-const { User } = require('../../model');
-const TokenService = require('../../services/token.service');
+const { User } = require("../../model");
+const TokenService = require("../../services/token.service");
 
 const auth = async (req, res, next) => {
   const user = req.user._json;
@@ -37,7 +37,7 @@ const auth = async (req, res, next) => {
     await newUser.save();
   }
   res.status(200).json({
-    message: 'seccess',
+    message: "success",
     data: {
       email,
       fullName: {
@@ -46,6 +46,7 @@ const auth = async (req, res, next) => {
       },
     },
     accessToken,
+    refreshToken,
   });
 };
 module.exports = auth;

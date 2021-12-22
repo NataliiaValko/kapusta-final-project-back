@@ -1,8 +1,8 @@
-const { UserService } = require('../../services');
-const { isErrorOrFalsyValue, responseWithError } = require('../../helpers');
+const { UserService } = require("../../services");
+const { isErrorOrFalsyValue, responseWithError } = require("../../helpers");
 
 const logout = async (req, res, next) => {
-  const refreshToken = req.cookies?.refreshToken;
+  const { refreshToken } = req.body;
 
   const obj = await UserService.logout(refreshToken);
 
@@ -10,7 +10,7 @@ const logout = async (req, res, next) => {
     return responseWithError(obj, next);
   }
 
-  res.clearCookie('refreshToken');
+  // res.clearCookie('refreshToken');
   res.status(204).json();
 };
 

@@ -6,6 +6,10 @@ const getCategories = (array, category) => {
   return array.find((el) => Object.values(el)[1] === category);
 };
 
+const getType = (array, type) => {
+  return array.find((el) => Object.values(el)[1] === type);
+};
+
 const checkFieldsOnUserUpdate = (updateUserData, key) =>
   updateUserData[key] !== undefined && key !== 'user' && key !== 'settings' && key !== 'fullName';
 
@@ -40,6 +44,7 @@ const initializeSummary = (monthesArr, type) =>
 module.exports = {
   isDuplicateKeyError,
   getCategories,
+  getType,
   formattedDate,
   checkFieldsOnUserUpdate,
   generatePhoneCode,

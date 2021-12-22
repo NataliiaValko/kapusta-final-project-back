@@ -9,14 +9,20 @@ const {
 const {
   isDuplicateKeyError,
   getCategories,
+  getType,
   formattedDate,
   checkFieldsOnUserUpdate,
   generatePhoneCode,
+<<<<<<< HEAD
   getFirstDayOfMonth,
   getLastDayOfMonth,
   getMonthIndexByDate,
   initializeSummary,
 } = require('./service.helpers');
+=======
+  prepareYearDate,
+} = require("./service.helpers");
+>>>>>>> 74c8a1309f4e8c4adbebbdc83263e4e46eea99f9
 
 const {
   responseErrorOrNext,
@@ -41,6 +47,7 @@ module.exports = {
   isTokenExpiredError,
   isLoggedIn,
   getCategories,
+  getType,
   formattedDate,
   isMailSent,
   isSameTypeInTransaction,
