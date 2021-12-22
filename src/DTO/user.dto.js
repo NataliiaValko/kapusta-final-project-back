@@ -31,7 +31,7 @@ const getUserInfoWithId = ({ user }) => {
   };
 };
 
-const getUserInfoWithToken = ({ user, tokens }) => {
+const getUserInfoWithTokens = ({ user, tokens }) => {
   const {
     email,
     fullName,
@@ -44,7 +44,6 @@ const getUserInfoWithToken = ({ user, tokens }) => {
     permissions,
     invitedFriends,
   } = user;
-  const { accessToken } = tokens;
   return {
     user: {
       email,
@@ -58,7 +57,7 @@ const getUserInfoWithToken = ({ user, tokens }) => {
       permissions,
       invitedFriends,
     },
-    accessToken,
+    ...tokens,
   };
 };
 
@@ -123,7 +122,7 @@ const getUserInvitedFriends = ({ invitedFriends }) => ({ invitedFriends });
 
 module.exports = {
   getUserInfoWithId,
-  getUserInfoWithToken,
+  getUserInfoWithTokens,
   getUserSettings,
   getUserPermissions,
   getUserAvatar,
