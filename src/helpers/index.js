@@ -9,9 +9,11 @@ const {
 const {
   isDuplicateKeyError,
   getCategories,
+  getType,
   formattedDate,
   checkFieldsOnUserUpdate,
   generatePhoneCode,
+  prepareYearDate,
 } = require("./service.helpers");
 
 const {
@@ -37,6 +39,7 @@ module.exports = {
   isTokenExpiredError,
   isLoggedIn,
   getCategories,
+  getType,
   formattedDate,
   isMailSent,
   isSameTypeInTransaction,
@@ -45,4 +48,5 @@ module.exports = {
   clearTempFolder,
   generatePhoneCode,
   phonePattern,
+  prepareYearDate,
 };
