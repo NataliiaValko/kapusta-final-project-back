@@ -40,6 +40,22 @@ const ALL_CATEGORIES = [...EXPENSE_CATEGORIES, ...INCOME_CATEGORIES];
 
 const MAX_AVATAR_SIZE = 4_096_000;
 const TEMP_FOLDER_PATH = path.join(__dirname, "../../", "temp/avatars");
+
+const MONTHES_ENUM = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
+
 const IMAGE_MIME_TYPES = [
   "image/gif",
   "image/jpeg",
@@ -70,4 +86,5 @@ module.exports = {
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
   ALLOWED_DOMAINS,
+  MONTHES_ENUM,
 };

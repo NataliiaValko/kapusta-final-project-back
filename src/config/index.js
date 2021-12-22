@@ -36,6 +36,7 @@ const {
   TEMP_FOLDER_PATH,
   IMAGE_MIME_TYPES,
   ALLOWED_DOMAINS,
+  MONTHES_ENUM,
 } = require("./constants");
 const { connectDatabase } = require("./db.connect");
 const { cookieOptions, corsOptions, uploadConfig } = require("./options");
@@ -80,4 +81,5 @@ module.exports = {
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
   TWILIO_MESSAGING_SID,
+  MONTHES_ENUM,
 };
