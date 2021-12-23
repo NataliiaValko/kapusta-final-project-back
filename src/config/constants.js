@@ -31,7 +31,12 @@ const ALL_CATEGORIES = [...EXPENSE_CATEGORIES, ...INCOME_CATEGORIES];
 const MAX_AVATAR_SIZE = 4_096_000;
 const TEMP_FOLDER_PATH = path.join(__dirname, '../../', 'temp/avatars');
 const IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 'image/pjpeg'];
-const ALLOWED_DOMAINS = ['http://localhost:3000', 'http://localhost:4000', 'http://www.google.com'];
+const ALLOWED_DOMAINS = [
+  'http://localhost:3000',
+  'http://localhost:4000',
+  'http://www.google.com',
+  'https://adamants-kapusta.netlify.app',
+];
 const MONTHES_ENUM = [
   'january',
   'february',

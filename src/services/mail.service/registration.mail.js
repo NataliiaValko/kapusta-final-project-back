@@ -123,7 +123,7 @@ const prepareRegistrationMail = (appUrl, verificationToken) => {
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
       <td style="padding-right: 0px;padding-left: 0px;" align="left">
-        <a href="https://cabbage-project.netlify.app/" target="_blank">
+        <a href="https://adamants-kapusta.netlify.app" target="_blank">
         <img align="left" border="0" src="https://s3.amazonaws.com/unroll-images-production/projects%2F0%2F1639399868454-logo.png" alt="Kapu$ta App Logo" title="Kapu$ta App Logo" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 90px;" width="90"/>
         </a>
       </td>
