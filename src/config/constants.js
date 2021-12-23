@@ -34,7 +34,7 @@ const IMAGE_MIME_TYPES = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 
 const ALLOWED_DOMAINS = [
   'http://localhost:3000',
   'http://localhost:4000',
-  'http://www.google.com',
+  'https://www.google.com',
   'https://adamants-kapusta.netlify.app',
 ];
 const MONTHES_ENUM = [
