@@ -10,7 +10,7 @@ const cookieOptions = {
 
 const corsOptions = {
   origin: ALLOWED_DOMAINS,
-  // credentials: true,
+  credentials: true,
 };
 
 const uploadConfig = multer.diskStorage({
