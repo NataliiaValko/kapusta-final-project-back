@@ -1,5 +1,5 @@
-const { User } = require("../../model");
-const TokenService = require("../../services/token.service");
+const { User } = require('../../model');
+const TokenService = require('../../services/token.service');
 
 const auth = async (req, res, next) => {
   const user = req.user._json;
@@ -36,17 +36,20 @@ const auth = async (req, res, next) => {
     });
     await newUser.save();
   }
-  res.status(200).json({
-    message: "success",
-    data: {
-      email,
-      fullName: {
-        firstName: given_name,
-        lastName: family_name,
-      },
-    },
-    accessToken,
-    refreshToken,
-  });
+  return res.redirect(
+    `http://localhost:3000?accessToken=${accessToken}&refreshToken${refreshToken}`
+  );
+  // res.status(200).json({
+  //   message: 'success',
+  //   data: {
+  //     email,
+  //     fullName: {
+  //       firstName: given_name,
+  //       lastName: family_name,
+  //     },
+  //   },
+  //   accessToken,
+  //   refreshToken,
+  // });
 };
 module.exports = auth;
