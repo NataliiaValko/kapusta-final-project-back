@@ -37,7 +37,7 @@ const auth = async (req, res, next) => {
     await newUser.save();
   }
   return res.redirect(
-    `http://localhost:3000?accessToken=${accessToken}&refreshToken${refreshToken}`
+    `http://localhost:3000?accessToken=${accessToken}&refreshToken=${refreshToken}`
   );
   // res.status(200).json({
   //   message: 'success',
