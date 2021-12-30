@@ -6,6 +6,7 @@ const { googleController } = require('../controllers');
 
 const { isLoggedIn } = require('../helpers');
 require('../config/passport-setup');
+
 router.get(
   '/',
   passport.authenticate('google', { scope: ['profile', 'email'] })
