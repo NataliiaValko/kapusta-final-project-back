@@ -1,4 +1,4 @@
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 dotenv.config();
 
 const {
@@ -22,6 +22,16 @@ const {
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
   TWILIO_MESSAGING_SID,
+  GCS_TYPE,
+  GCS_PROJECT_ID,
+  GCS_PRIVATE_KEY_ID,
+  GCS_PRIVATE_KEY,
+  GCS_CLIENT_EMAIL,
+  GCS_CLIENT_ID,
+  GCS_AUTH_URI,
+  GCS_TOKEN_URI,
+  GCS_AUTH_PROVIDER,
+  GCS_CLIENT_CERT,
 } = process.env;
 
 module.exports = {
@@ -45,4 +55,14 @@ module.exports = {
   TWILIO_ACCOUNT_CID,
   TWILIO_AUTH_TOKEN,
   TWILIO_MESSAGING_SID,
+  GCS_TYPE,
+  GCS_PROJECT_ID,
+  GCS_PRIVATE_KEY_ID,
+  GCS_PRIVATE_KEY,
+  GCS_CLIENT_EMAIL,
+  GCS_CLIENT_ID,
+  GCS_AUTH_URI,
+  GCS_TOKEN_URI,
+  GCS_AUTH_PROVIDER,
+  GCS_CLIENT_CERT,
 };

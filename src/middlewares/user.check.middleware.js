@@ -25,6 +25,25 @@ const checkUserCredentials = async (req, _, next) => {
   next();
 };
 
+const checkUserPasswords = async (req, _, next) => {
+  const {
+    user: { _id },
+    oldPassword,
+  } = req.body;
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    next(new NotFound(`User not found`));
+  }
+
+  if (!user?.comparePassword(oldPassword)) {
+    next(new BadRequest(`Password is wrong`));
+  }
+
+  next();
+};
+
 const authenticateUser = async (req, _, next) => {
   try {
     const { authorization } = req.headers;
@@ -54,4 +73,4 @@ const authenticateUser = async (req, _, next) => {
   next();
 };
 
-module.exports = { checkUserCredentials, authenticateUser };
+module.exports = { checkUserCredentials, authenticateUser, checkUserPasswords };

@@ -1,99 +1,49 @@
-const { google } = require('googleapis');
 const fs = require('fs');
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URL, GOOGLE_REFRESH_TOKEN } = require('../../config');
+const path = require('path');
+const { Storage } = require('@google-cloud/storage');
+const { GCS_PROJECT_ID } = require('./../../config');
+
+const storageBaseUrl = 'https://storage.googleapis.com/';
+const bucketName = 'kapusta-bucket';
 
 class FileService {
   constructor() {
-    this.oauth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URL);
-    this.oauth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
-    this.drive = google.drive({
-      version: 'v3',
-      auth: this.oauth2Client,
+    this.storage = new Storage({
+      project_id: GCS_PROJECT_ID,
+      keyFilename: path.join(__dirname, '../../../rapid-hangar-336920-6e55060c85e7.json'),
     });
+    this.bucket = this.storage.bucket(bucketName);
   }
 
-  async generatePublicUrl(fileId) {
-    try {
-      await this.drive.permissions.create({
-        fileId,
-        requestBody: {
-          role: 'reader',
-          type: 'anyone',
-        },
-      });
-
-      const result = await this.drive.files.get({
-        fileId,
-        fields: 'webContentLink',
-      });
-
-      if ('webContentLink' in result.data) {
-        const { webContentLink } = result.data;
-
-        const searchedSubstr = '&export=download';
-        if (webContentLink.includes(searchedSubstr)) {
-          const imageUrl = webContentLink.replace(searchedSubstr, '');
-          return imageUrl;
-        }
-      }
-
+  async renameUserFile(userId, oldFileName) {
+    if (!oldFileName || !userId) {
       return null;
-    } catch (error) {
-      return error;
     }
-  }
 
-  async createFolder(userId) {
-    try {
-      const response = await this.drive.files.create({
-        resource: {
-          name: userId,
-          mimeType: 'application/vnd.google-apps.folder',
-        },
-        fields: 'id, name',
-      });
+    const newFileName = userId + path.extname(oldFileName);
+    const newFilePath = path.dirname(oldFileName) + '/' + newFileName;
 
-      return 'id' in response.data ? response.data.id : null;
-    } catch (error) {
-      return error;
-    }
-  }
+    await fs.rename(oldFileName, newFilePath, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
 
-  async searchFolder(userId) {
-    try {
-      const response = await this.drive.files.list({
-        q: `mimeType='application/vnd.google-apps.folder' and name='${userId}'`,
-        fields: 'files(id, name)',
-      });
-
-      return response.data.files ? response.data.files[0] : null;
-    } catch (error) {
-      console.log(error);
-    }
+    return { newFileName, newFilePath };
   }
 
   async uploadFile(userId, filePath) {
     try {
-      let newFolder = {};
-      const existedFolder = await this.searchFolder(userId);
+      const { newFileName, newFilePath } = await this.renameUserFile(userId, filePath);
 
-      if (!existedFolder) {
-        newFolder.id = await this.createFolder(userId);
-      }
-
-      const response = await this.drive.files.create({
-        requestBody: {
-          name: userId,
-          mimeType: 'image/jpg',
-          parents: [newFolder.id || existedFolder.id],
-        },
-        media: {
-          mimeType: 'image/jpg',
-          body: fs.createReadStream(filePath),
-        },
+      await this.bucket.upload(newFilePath, (err) => {
+        if (err) {
+          console.log('err', err);
+        }
       });
 
-      return 'id' in response.data ? await this.generatePublicUrl(response.data.id) : null;
+      const avatarUrl = `${storageBaseUrl}${bucketName}/` + newFileName;
+      return { avatarUrl, newFilePath };
     } catch (error) {
       return error;
     }

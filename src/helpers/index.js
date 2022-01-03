@@ -27,6 +27,7 @@ const {
   isLoggedIn,
   clearTempFolder,
 } = require('./middleware.helpers');
+const { generateJSON } = require('./generateJSON.helper');
 
 const { isMailSent } = require('./mail.helper');
 const { phonePattern } = require('./model.helpers');
@@ -55,4 +56,5 @@ module.exports = {
   getLastDayOfMonth,
   getMonthIndexByDate,
   initializeSummary,
+  generateJSON,
 };

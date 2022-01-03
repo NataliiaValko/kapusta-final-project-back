@@ -1,27 +1,21 @@
 const fs = require('fs');
 const { User } = require('../../model');
 const { fileService } = require('../upload.service');
-const { TEMP_FOLDER_PATH } = require('../../config');
 
 const changeAvatar = async ({ user: { _id } }, file) => {
-  const { path, originalname } = file;
-
+  const { path } = file;
+  let avatar = null;
   try {
-    const avatar = await fileService.uploadFile(_id, path);
+    avatar = await fileService.uploadFile(_id, path);
+    const { avatarUrl } = avatar;
 
-    const user = await User.findByIdAndUpdate(
-      _id,
-      { avatar },
-      {
-        new: true,
-      }
-    );
+    const user = await User.findByIdAndUpdate(_id, { avatar: avatarUrl }, { new: true });
 
     return user;
   } catch (error) {
     return error;
   } finally {
-    await fs.unlink(`${TEMP_FOLDER_PATH}/${originalname}`, (err) => {
+    await fs.unlink(`${avatar.newFilePath}`, (err) => {
       if (err) throw err;
     });
   }

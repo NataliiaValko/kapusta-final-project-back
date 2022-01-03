@@ -4,12 +4,21 @@ const {
   joiInviteSchema,
   joiUserUpdateSchema,
   joiPhoneVerificationSchema,
+  joiUserPasswordChangeSchema,
 } = require('../model');
 
 const userValidation = async (req, res, next) => {
   const requiredFields = ['email', 'password'];
 
   const { error } = validateObject(req.body, joiUserRegistrationSchema, requiredFields);
+
+  responseErrorOrNext(error, res, next);
+};
+
+const userPasswordsValidation = async (req, res, next) => {
+  const requiredFields = ['oldPassword', 'newPassword'];
+
+  const { error } = validateObject(req.body, joiUserPasswordChangeSchema, requiredFields);
 
   responseErrorOrNext(error, res, next);
 };
@@ -44,4 +53,5 @@ module.exports = {
   userInvitationValidation,
   userUpdateValidation,
   userPhoneVerificationValidation,
+  userPasswordsValidation,
 };

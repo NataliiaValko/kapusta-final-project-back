@@ -278,7 +278,7 @@
       }
     },
     "/users/logout": {
-      "get": {
+      "post": {
         "tags": ["Auth"],
         "summary": "Logout current logged in user",
         "description": "Logout current logged in user",
