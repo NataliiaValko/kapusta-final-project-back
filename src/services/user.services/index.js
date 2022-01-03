@@ -9,6 +9,7 @@ const { update } = require('./update.service');
 const { changeBalance } = require('./changeBalance.service');
 const { changeAvatar } = require('./changeAvatar.service');
 const { verifyPhone } = require('./verifyPhone.service');
+const { changePassword } = require('./changePassword.service');
 
 module.exports = {
   registration,
@@ -22,4 +23,5 @@ module.exports = {
   changeBalance,
   changeAvatar,
   verifyPhone,
+  changePassword,
 };

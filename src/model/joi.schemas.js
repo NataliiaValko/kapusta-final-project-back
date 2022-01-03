@@ -1,5 +1,5 @@
-const joi = require("joi");
-const PasswordComplexity = require("joi-password-complexity");
+const joi = require('joi');
+const PasswordComplexity = require('joi-password-complexity');
 const {
   LANGUAGE_ENUM,
   THEME_ENUM,
@@ -7,9 +7,9 @@ const {
   OPERATION_TYPES,
   INCOME_CATEGORIES,
   EXPENSE_CATEGORIES,
-} = require("../config");
-const { EnumDTO } = require("../DTO");
-const { phonePattern } = require("../helpers");
+} = require('../config');
+const { EnumDTO } = require('../DTO');
+const { phonePattern } = require('../helpers');
 
 const LangEnum = EnumDTO.getSchemaEnum(LANGUAGE_ENUM);
 const ThemeEnum = EnumDTO.getSchemaEnum(THEME_ENUM);
@@ -33,6 +33,30 @@ const joiUserRegistrationSchema = joi.object({
 
   firstName: joi.string().max(30),
   lastName: joi.string().max(30),
+});
+
+const joiUserPasswordChangeSchema = joi.object({
+  oldPassword: PasswordComplexity({
+    min: 8,
+    max: 12,
+    lowerCase: 1,
+    upperCase: 1,
+    numeric: 1,
+    symbol: 1,
+    requirementCount: 4,
+  }).required(),
+
+  newPassword: PasswordComplexity({
+    min: 8,
+    max: 12,
+    lowerCase: 1,
+    upperCase: 1,
+    numeric: 1,
+    symbol: 1,
+    requirementCount: 4,
+  }).required(),
+
+  user: joi.any(),
 });
 
 // TODO: insert REGEXP
@@ -72,7 +96,7 @@ const joiTransactionSchema = joi.object({
     .valid(...OperationsEnum)
     .required(),
 
-  category: joi.alternatives().conditional("type", {
+  category: joi.alternatives().conditional('type', {
     is: OperationsEnum[0],
     then: joi.valid(...IncomeEnum).required(),
     otherwise: joi.valid(...ExpenseEnum).required(),
@@ -104,4 +128,5 @@ module.exports = {
   joiUserUpdateSchema,
   joiTransactionSchema,
   joiPhoneVerificationSchema,
+  joiUserPasswordChangeSchema,
 };

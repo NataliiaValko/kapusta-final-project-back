@@ -1,13 +1,14 @@
-const { User } = require("./user.schema");
-const { Transaction } = require("./transaction.schema");
-const { Developer } = require("./developer.schema");
+const { User } = require('./user.schema');
+const { Transaction } = require('./transaction.schema');
+const { Developer } = require('./developer.schema');
 const {
   joiUserRegistrationSchema,
   joiInviteSchema,
   joiUserUpdateSchema,
   joiTransactionSchema,
   joiPhoneVerificationSchema,
-} = require("./joi.schemas");
+  joiUserPasswordChangeSchema,
+} = require('./joi.schemas');
 
 module.exports = {
   User,
@@ -18,4 +19,5 @@ module.exports = {
   joiInviteSchema,
   joiUserUpdateSchema,
   joiPhoneVerificationSchema,
+  joiUserPasswordChangeSchema,
 };

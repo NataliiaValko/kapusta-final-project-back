@@ -8,5 +8,18 @@ const { current } = require('./current.controller');
 const { update } = require('./update.controller');
 const { changeAvatar } = require('./changeAvatar.controller');
 const { verifyPhone } = require('./verifyPhone.controller');
+const { changePassword } = require('./changePassword.controller');
 
-module.exports = { registration, verify, login, logout, invite, refresh, current, update, changeAvatar, verifyPhone };
+module.exports = {
+  registration,
+  verify,
+  login,
+  logout,
+  invite,
+  refresh,
+  current,
+  update,
+  changeAvatar,
+  verifyPhone,
+  changePassword,
+};
