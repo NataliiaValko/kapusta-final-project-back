@@ -1,16 +1,19 @@
-const fs = require('fs');
-const path = require('path');
-const { Storage } = require('@google-cloud/storage');
-const { GCS_PROJECT_ID } = require('./../../config');
+const fs = require("fs");
+const path = require("path");
+const { Storage } = require("@google-cloud/storage");
+const { GCS_PROJECT_ID } = require("./../../config");
 
-const storageBaseUrl = 'https://storage.googleapis.com/';
-const bucketName = 'kapusta-bucket';
+const storageBaseUrl = "https://storage.cloud.google.com/";
+const bucketName = "kapusta-bucket";
 
 class FileService {
   constructor() {
     this.storage = new Storage({
       project_id: GCS_PROJECT_ID,
-      keyFilename: path.join(__dirname, '../../../rapid-hangar-336920-6e55060c85e7.json'),
+      keyFilename: path.join(
+        __dirname,
+        "../../../rapid-hangar-336920-6e55060c85e7.json"
+      ),
     });
     this.bucket = this.storage.bucket(bucketName);
   }
@@ -21,7 +24,7 @@ class FileService {
     }
 
     const newFileName = userId + path.extname(oldFileName);
-    const newFilePath = path.dirname(oldFileName) + '/' + newFileName;
+    const newFilePath = path.dirname(oldFileName) + "/" + newFileName;
 
     await fs.rename(oldFileName, newFilePath, (err) => {
       if (err) {
@@ -34,11 +37,14 @@ class FileService {
 
   async uploadFile(userId, filePath) {
     try {
-      const { newFileName, newFilePath } = await this.renameUserFile(userId, filePath);
+      const { newFileName, newFilePath } = await this.renameUserFile(
+        userId,
+        filePath
+      );
 
       await this.bucket.upload(newFilePath, (err) => {
         if (err) {
-          console.log('err', err);
+          console.log("err", err);
         }
       });
 
