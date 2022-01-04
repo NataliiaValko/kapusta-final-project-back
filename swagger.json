@@ -447,6 +447,57 @@
         }
       }
     },
+    "/users/password": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Change user password",
+        "description": "This can only be done by logged in user.",
+        "operationId": "password",
+        "security": [{ "Bearer": [] }],
+
+        "produces": ["application/json"],
+        "requestBody": {
+          "type": "object",
+          "description": "Valid user password-change body object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password successfully changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Password successfully changed"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password is wrong / Passwords are equal. Use another one. / Some validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Password is wrong",
+                    "status": "Error",
+                    "code": "400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/avatar": {
       "patch": {
         "tags": ["Users"],
@@ -477,7 +528,7 @@
                   "example": {
                     "message": "success",
                     "data": {
-                      "avatar": "https://drive.google.com/drive/folders/162F92a-sm6MX8k96Jc59KCtf0NtXkdM4"
+                      "avatar": "https://storage.googleapis.com/kapusta-bucket/61c1f6ac471b245bf3022eb2.png"
                     }
                   }
                 }
@@ -1026,7 +1077,9 @@
             "type": "string",
             "required": true,
             "description": "Valid password length: 8-12, must contain  lowerCase: 1,  upperCase: 1, numeric: 1, symbol: 1,",
-            "example": "Hello123-"
+            "example": "Hello123-",
+            "minLength": 8,
+            "maxLength": 12
           }
         }
       },
@@ -1243,6 +1296,27 @@
                 "example": "UAH"
               }
             }
+          }
+        }
+      },
+      "PasswordUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "description": "User's old password",
+            "required": true,
+            "example": "Hello123-",
+            "minLength": 8,
+            "maxLength": 12
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "User's new password",
+            "required": true,
+            "example": "Bye-bye456",
+            "minLength": 8,
+            "maxLength": 12
           }
         }
       },
@@ -1537,69 +1611,69 @@
             "example": {
               "message": "success",
               "data": {
-                  "result": [
-                      {
-                          "month": "january",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "february",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "march",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "april",
-                          "type": "expense",
-                          "total": 1300
-                      },
-                      {
-                          "month": "may",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "june",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "july",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "august",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "september",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "october",
-                          "type": "expense",
-                          "total": 800
-                      },
-                      {
-                          "month": "november",
-                          "type": "expense",
-                          "total": 0
-                      },
-                      {
-                          "month": "december",
-                          "type": "expense",
-                          "total": 0
-                      }
-                  ],
-                  "total": 2100
+                "result": [
+                  {
+                    "month": "january",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "february",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "march",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "april",
+                    "type": "expense",
+                    "total": 1300
+                  },
+                  {
+                    "month": "may",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "june",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "july",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "august",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "september",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "october",
+                    "type": "expense",
+                    "total": 800
+                  },
+                  {
+                    "month": "november",
+                    "type": "expense",
+                    "total": 0
+                  },
+                  {
+                    "month": "december",
+                    "type": "expense",
+                    "total": 0
+                  }
+                ],
+                "total": 2100
               }
             }
           }

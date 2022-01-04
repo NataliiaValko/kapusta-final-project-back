@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 const {
   GCS_TYPE,
   GCS_PROJECT_ID,
@@ -11,9 +11,9 @@ const {
   GCS_TOKEN_URI,
   GCS_AUTH_PROVIDER,
   GCS_CLIENT_CERT,
-} = require('./../config');
+} = require("./../config");
 
-const fileName = 'rapid-hangar-336920-6e55060c85e7.json';
+const fileName = "rapid-hangar-336920-6e55060c85e7.json";
 const filePath = path.join(__dirname, `../../${fileName}`);
 
 const data = {
@@ -32,9 +32,10 @@ const data = {
 const generateJSON = async () => {
   await fs.stat(filePath, async (err) => {
     if (err) {
-      await fs.writeFile(filePath, JSON.stringify(data), {}, (err) => {
+      const stringifiedData = JSON.stringify(data).replace(/\\\\/g, "\\");
+      await fs.writeFile(filePath, stringifiedData, {}, (err) => {
         if (err) {
-          console.log('error: ', err);
+          console.log("error: ", err);
         }
       });
     }
