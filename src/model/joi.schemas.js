@@ -31,8 +31,8 @@ const joiUserRegistrationSchema = joi.object({
     requirementCount: 4,
   }).required(),
 
-  firstName: joi.string().max(30),
-  lastName: joi.string().max(30),
+  firstName: joi.string().max(30).empty(''),
+  lastName: joi.string().max(30).empty(''),
 });
 
 const joiUserPasswordChangeSchema = joi.object({
@@ -59,7 +59,6 @@ const joiUserPasswordChangeSchema = joi.object({
   user: joi.any(),
 });
 
-// TODO: insert REGEXP
 const joiUserUpdateSchema = joi.object({
   fullName: {
     firstName: joi.string().max(30),
