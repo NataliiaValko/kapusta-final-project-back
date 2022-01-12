@@ -1,6 +1,6 @@
-const { User } = require("../../model");
-const TokenService = require("../../services/token.service");
-const { FRONTEND_APP_URL } = require("../../config");
+const { User } = require('../../model');
+const TokenService = require('../../services/token.service');
+const { FRONTEND_APP_URL } = require('../../config');
 
 const auth = async (req, res, next) => {
   const user = req.user._json;
@@ -37,9 +37,12 @@ const auth = async (req, res, next) => {
     });
     await newUser.save();
   }
-  return res.redirect(
-    `${FRONTEND_APP_URL}/?accessToken=${accessToken}&refreshToken=${refreshToken}`
-  );
+
+  const redirectUrl = req.headers.host.includes('localhost')
+    ? `http://${req.headers.host}/?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    : `${FRONTEND_APP_URL}/?accessToken=${accessToken}&refreshToken=${refreshToken}`;
+
+  return res.redirect(redirectUrl);
   // res.status(200).json({
   //   message: 'success',
   //   data: {
