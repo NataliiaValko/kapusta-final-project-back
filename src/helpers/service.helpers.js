@@ -1,3 +1,5 @@
+const path = require("path");
+
 const isDuplicateKeyError = (error) => error.code === 11000;
 
 const formattedDate = (date) => new Date(date).getTime();
@@ -11,7 +13,10 @@ const getType = (array, type) => {
 };
 
 const checkFieldsOnUserUpdate = (updateUserData, key) =>
-  updateUserData[key] !== undefined && key !== 'user' && key !== 'settings' && key !== 'fullName';
+  updateUserData[key] !== undefined &&
+  key !== "user" &&
+  key !== "settings" &&
+  key !== "fullName";
 
 const generatePhoneCode = () => {
   return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
@@ -41,6 +46,15 @@ const initializeSummary = (monthesArr, type) =>
     };
   });
 
+const prepareAvatarFileName = (oldFileName) => {
+  const baseName = path.basename(oldFileName);
+  const extname = path.extname(oldFileName);
+  const oldFileNameWithoutExt = baseName.replace(extname, "");
+  const timeStamp = Date.now();
+
+  return `${oldFileNameWithoutExt}_${timeStamp}${extname}`;
+};
+
 module.exports = {
   isDuplicateKeyError,
   getCategories,
@@ -52,4 +66,5 @@ module.exports = {
   getLastDayOfMonth,
   getMonthIndexByDate,
   initializeSummary,
+  prepareAvatarFileName,
 };

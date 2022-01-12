@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { Storage } = require("@google-cloud/storage");
 const { GCS_PROJECT_ID } = require("./../../config");
+const { prepareAvatarFileName } = require("./../../helpers");
 
 const storageBaseUrl = "https://storage.cloud.google.com/";
 const bucketName = "kapusta-bucket";
@@ -18,15 +19,15 @@ class FileService {
     this.bucket = this.storage.bucket(bucketName);
   }
 
-  async renameUserFile(userId, oldFileName) {
-    if (!oldFileName || !userId) {
+  async renameUserFile(userId, oldFilePath) {
+    if (!oldFilePath || !userId) {
       return null;
     }
 
-    const newFileName = userId + path.extname(oldFileName);
-    const newFilePath = path.dirname(oldFileName) + "/" + newFileName;
+    const newFileName = prepareAvatarFileName(oldFilePath);
+    const newFilePath = `${path.dirname(oldFilePath)}/${newFileName}`;
 
-    await fs.rename(oldFileName, newFilePath, (err) => {
+    await fs.rename(oldFilePath, newFilePath, (err) => {
       if (err) {
         console.log(err);
       }
@@ -48,7 +49,7 @@ class FileService {
         }
       });
 
-      const avatarUrl = `${storageBaseUrl}${bucketName}/` + newFileName;
+      const avatarUrl = `${storageBaseUrl}${bucketName}/${newFileName}`;
       return { avatarUrl, newFilePath };
     } catch (error) {
       return error;
