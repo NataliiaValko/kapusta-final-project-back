@@ -1,10 +1,10 @@
-const { asyncWrapper } = require('./wrapper');
+const { asyncWrapper } = require("./wrapper");
 const {
   isErrorOrFalsyValue,
   responseWithError,
   isSameTypeInTransaction,
   getAmountDifference,
-} = require('./controller.helpers');
+} = require("./controller.helpers");
 
 const {
   isDuplicateKeyError,
@@ -17,7 +17,8 @@ const {
   getLastDayOfMonth,
   getMonthIndexByDate,
   initializeSummary,
-} = require('./service.helpers');
+  prepareAvatarFileName,
+} = require("./service.helpers");
 
 const {
   responseErrorOrNext,
@@ -26,11 +27,11 @@ const {
   isTokenExpiredError,
   isLoggedIn,
   clearTempFolder,
-} = require('./middleware.helpers');
-const { generateJSON } = require('./generateJSON.helper');
+} = require("./middleware.helpers");
+const { generateJSON } = require("./generateJSON.helper");
 
-const { isMailSent } = require('./mail.helper');
-const { phonePattern } = require('./model.helpers');
+const { isMailSent } = require("./mail.helper");
+const { phonePattern } = require("./model.helpers");
 
 module.exports = {
   asyncWrapper,
@@ -57,4 +58,5 @@ module.exports = {
   getMonthIndexByDate,
   initializeSummary,
   generateJSON,
+  prepareAvatarFileName,
 };
